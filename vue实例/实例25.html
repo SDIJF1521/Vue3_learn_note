@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id = 'app'></div>
+    <template id = 'my-app'>
+        <ul>
+            <li v-for = '(move,index) in moves'> {{index+1}}.{{move}}</li>
+        </ul>
+        <button @click = 'execute'>显示前三名</button>
+    </template>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const App = Vue.createApp(
+            {
+                template:'#my-app',
+                data(){
+                    return{
+                        moves:['python3爬虫开发实战指南','JavaScript权威指南','流畅的python','C语言程序设计','python从入门到实战']
+                    }
+                    
+                },
+                methods:{
+                    execute(){
+                        this.moves= this.moves.filter((move,index)=>index<3)
+                    }
+                }
+            }
+        ).mount('#app')
+    </script>
+</body>
+</html>

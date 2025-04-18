@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id = 'app'></div>
+    <template id = 'my-app'>
+        <h2 v-show ='isShow'>你好世界</h2>
+        <button @click = 'execute'>按下{{mag}}</button>
+    </template>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const App = Vue.createApp(
+            {
+                template:'#my-app',
+                data(){
+                    return{
+                        isShow : true,
+                        mag:'隐藏'
+                    }
+                },
+                methods:{
+                    execute(){
+                        if (this.isShow){
+                            this.mag = '显示'
+                        }else{
+                            this.mag = '隐藏'
+                        }
+                        this.isShow = !this.isShow
+                    }
+                }
+            }
+        ).mount('#app')
+    </script>
+</body>
+</html>

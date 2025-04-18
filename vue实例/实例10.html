@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <template id="my-app">
+        <div :class="abc">class绑定字符串1</div>
+        <div :class="className">class绑定字符串2</div>
+        <div :class="{'active': isActive}">class绑定字符串3</div>
+        <div :class="{active: isActive, title: true}">class绑定对象</div>
+        <div :class="{active: isActive, title: true}">class绑定对象2</div>
+        <div class="abc cba" :class="{active: isActive, title: true}">默认class和动态class结合</div>
+        <div class="abc cba" :class="classObj">绑定属性中的对象</div>
+        <div class="abc cba" :class="getObj()">绑定methods/computed返回的对象</div>
+        <button @click="toggle">切换isActive</button>
+    </template>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const app = Vue.createApp({
+            template: '#my-app',
+            data() {
+                return {
+                    className: 'coderwhy',
+                    isActive: true,
+                    classObj: {
+                        active: true,
+                        title: true
+                    },
+                };
+            },
+            methods: {
+                toggle() {
+                    this.isActive = !this.isActive
+                },
+                getObj() {
+                    return {
+                        active: false,
+                        title: true
+                    }
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>    

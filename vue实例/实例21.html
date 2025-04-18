@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id= 'app'></div>
+    <template id = 'my-app'>
+        <input type = 'text' v-model="score" placeholder = '请输入分数'>
+        <h2 v-if = 'score >100 || score <0'>分数不合法</h2>
+        <h2 v-else-if = 'score >=90'>优秀</h2>
+        <h2 v-else-if = 'score>=60'>良好</h2>
+        <h2 v-else>不及格</h2>
+    </template>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const App = Vue.createApp(
+            {
+                template:'#my-app',
+                data(){
+                    return{
+                        score: 90
+                    }
+                }
+            }
+        ).mount('#app')
+    </script>
+</body>
+
+</html>

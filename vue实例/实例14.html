@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id= 'app'></div>
+    <template id ='my-app'>
+        <div :[name]="value">v-bind动态绑定一个对象</div>
+        <div v-bind:[name] = 'value'>v-bind动态绑定一个对象</div>
+    </template>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const App = Vue.createApp(
+            {
+                template:'#my-app',
+                data(){
+                    return{
+                        name:'username',
+                        value:'kobe'
+                    }
+                }
+            }
+        ).mount('#app')
+    </script>
+ </body>
+</html>

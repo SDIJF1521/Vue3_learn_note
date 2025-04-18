@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id = 'app'></div>
+    <template id = 'my-app'>
+        <ul>
+            <li v-for = '(move,index) in moves'>{{index+1}}.{{move}}</li>
+        </ul>
+        <input type = 'text' v-model = 'name'>
+        <button @click = 'add'>添加</button>
+    </template>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const App = Vue.createApp(
+            {
+                template:'#my-app',
+                data(){
+                    return{
+                        name : '',
+                        moves : ['生化危机','盗梦空间']
+                    }
+                },
+                methods:{
+                    add(){
+                        if (! this.moves.includes(this.name)){
+                            this.moves.push(this.name);
+                            this.name = '';
+                        }else{
+                            this.name = '';
+                            alert('已存在');
+                        }
+                    }
+                }
+            }
+            ).mount('#app')
+    </script>
+</body>
+</html>

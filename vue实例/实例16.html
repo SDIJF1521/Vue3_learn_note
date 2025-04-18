@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .area{
+            width: 100px;
+            height: 100px;
+            background-color: red;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div id='app'></div>
+    <template id='my-app'>
+        <button v-on:click='change'>监听按钮单击</button>
+        <div class="area" v-on:mousemove="mousemove">监听鼠标移动事件</div>
+        <button @click="btnCilck">监听按钮单击</button>
+        <button @click = 'counter++'>单击+1 {{counter}}</button>
+        <div class = "area" v-on="{click:btnCilck, mousemove:mousemove}">监听鼠标移动事件</div>
+        <div class="area" @="{click:btnCilck, mousemove:mousemove}">监听鼠标移动事件</div>
+    </template>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const App = Vue.createApp({
+            template:'#my-app',
+            data(){
+                return{
+                    message:'vue',
+                    counter:100
+                }
+            },
+            methods:{
+                change(){
+                    this.message = 'hello vue3'
+                    console.log(this.message)
+                },
+                mousemove(event){
+                    console.log(event)
+                },
+                btnCilck(){
+                    console.log('按钮单击')
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>

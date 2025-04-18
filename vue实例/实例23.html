@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id='app'> </div>
+    <template id = 'my-app'>
+        <h4>书籍列表</h4>
+        <ul>
+            <li v-for="name in book">{{name}}</li>
+        </ul>
+    </template>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const App = Vue.createApp(
+            {
+                template:'#my-app',
+                data(){
+                    return{
+                        book:['算法导论',"算法图解","流畅的python","JavaScript权威指南"]
+                    }
+                }
+            }
+            ).mount('#app')
+    </script>
+</body> 
+</html>

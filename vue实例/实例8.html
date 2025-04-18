@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+        <template id="my-app">
+            <h2 v-cloak>{{msg}}</h2>
+        </template>
+    <!-- 引入 Vue 库 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const App = Vue.createApp({
+            template: '#my-app',
+            data() {
+                return {
+                    msg: 'hello vue'
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

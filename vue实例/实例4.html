@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+        <template id="my-app">
+            <h2>{{counter}}</h2>
+            <h3>{{(counter >120) ? '你好牛马!' : 'hello vue.js'}}</h3>
+            <div v-once>
+                <p>{{vul}}</p>
+                <h2>{{counter}}</h2>
+                <h3>{{msg}}</h3>
+            </div>
+            <button @click="commit">+1</button>
+    
+        </template>
+
+    <!-- 引入vue.js -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        // 创建vue实例
+        const app = Vue.createApp({
+            template: '#my-app',
+            data() {
+                return {
+                    // 模板绑定属性
+                    counter: 100,
+                    vul:'添加了v-once指令',
+                    msg: 'Hello Vue!'
+                };
+            },
+            methods: {
+                commit() {
+                    this.counter++;
+                }
+            }
+        });
+        app.mount('#app');
+    </script>
+</body>
+</html>    

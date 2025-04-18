@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app"></div>
+        <template id="my-app">
+            <h2>{{msg}}</h2>
+            <h3 v-html="msg"></h3>
+        </template>
+    <!-- 引入 Vue 库 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const App = Vue.createApp({
+            template: '#my-app',
+            data() {
+                return {
+                    // 修正 HTML 标签语法错误
+                    msg: '<span style="color: red; background: blue;">hello vue3.js</span>'
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>    

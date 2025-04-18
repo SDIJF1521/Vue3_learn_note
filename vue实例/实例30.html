@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id='app'></div>
+    <template id="my-app">
+        <h4>{{getFullName()}}</h4>
+        <h4>{{getFullName()}}</h4>
+        <h4>{{getFullName()}}</h4>
+        <h4>{{getFullName()}}</h4>
+        <h4>{{fullName}}</h4>
+        <h4>{{fullName}}</h4>
+        <h4>{{fullName}}</h4>
+        <h4>{{fullName}}</h4>
+    </template>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const App = Vue.createApp({
+            template: '#my-app',
+            data() {
+                return {
+                    firstName: 'Kobe',
+                    lastName: 'Bryant'
+                };
+            },
+            computed: {
+                fullName() {
+                    console.log('computed的 fullName中计算');
+                    return this.firstName + ' ' + this.lastName;
+                }
+            },
+            methods: {
+                getFullName() {
+                    console.log('methods的 getFullName中计算');
+                    return this.firstName + ' ' + this.lastName;
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>

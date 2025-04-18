@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id = 'app'></div>
+    <template id = 'my-app'>
+        <h2 v-if = 'val'>你好顶级牛马</h2>
+        <h2 v-else> 你好世界</h2>
+        <button @click = 'add'>点我{{mas}}</button>
+    </template>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const App = Vue.createApp(
+            {
+                template:'#my-app',
+                data(){
+                    return{
+                        val:false,
+                        mas:0
+                    }
+                },
+                methods:{
+                    add(){
+                        if (this.mas >= 50){
+                            this.mas = 0;
+                            this.val = !this.val
+                        }else{
+                            this.mas +=1;
+                        }
+                    }
+                }
+            }
+        ).mount('#app')
+    </script>
+</body>
+</html>

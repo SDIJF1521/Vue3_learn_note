@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id='app'></div>
+    <template id='my-app'>
+        <!-- 输入框，使用 v-model 绑定 question 数据 -->
+        <input type='text' v-model='question'>
+        <!-- 显示答案-->
+        <div>{{answer}}</div>
+    </template>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const app = Vue.createApp({
+
+            template: '#my-app',
+            data() {
+                return {
+                    question: '',
+                    answer: ''
+                };
+            },
+            watch: {
+                question: function (newValue, oldValue) {
+                    console.log('新 question 值：', newValue, '旧的 question 值', oldValue);
+                    this.queryAnswer();
+                }
+            },
+            methods: {
+                queryAnswer() {
+                    this.answer = `你的问题是：${this.question}? 答案：纯牛马`;
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

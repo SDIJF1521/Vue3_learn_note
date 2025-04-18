@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <template id="my-app">
+        <div :class="['abc', title]"> vbind绑定 class-数组语法</div>
+        <div :class="['abc', title, isActive ? 'active' : '']"> vbind绑定 class-数组语法</div>
+        <div :class="['abc', title, {active: isActive}]"> vbind绑定 class-数组语法</div>
+    </template>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const App = Vue.createApp({
+            template: '#my-app',
+            data() {
+                return {
+                    msg: 'hello vue',
+                    title: 'cba',
+                    isActive: true
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>    

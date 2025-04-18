@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <template id="my-app">
+        <!-- 使用 v-bind 绑定 src 属性 -->
+        <img v-bind:src="imgUrl" :style = 'val'>
+        <a v-bind:href="link">百度链接</a>
+        <!-- 使用 v-bind 绑定 src 属性 -->
+        <img v-bind:src="imgUrl" :style="val">
+    </template>
+    <!-- 引入 Vue 库 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const App = Vue.createApp({
+            template: '#my-app',
+            data() {
+                return {
+                    imgUrl: 'https://img-baofun.zhhainiao.com/pcwallpaper_ugc_mobile/preview_jpg/82e40c5fb47fa98aacb47c305e4ee27c.jpg',
+                    link: 'https://www.baidu.com',
+                    val:{ width: '100px', height: '200px' }
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>    
