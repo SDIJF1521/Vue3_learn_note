@@ -986,7 +986,7 @@
 
 ## vue.js3 的Options API
 - `Options API` 是一种通过对象定义属性、方法等框架API的方式
-#### 计算属性
+### 计算属性
 - 在模板中可以通过插值语法显示一些data数据，但在模型情况下，可能需要对数据进行一些转换后在显示，或者需要将多个节点结合起来进行显示，例如需要对多个data数据进行运算或由三元运算符来决定结果，或对数据进行某种转换后显示结果。在模板中直接使用表达式，可以非常方便的实现这些功能，但是在模板中放入大量逻辑会让模板太重难以维护，如果多个地方有相同逻辑，会有大量重复代码，不利于代码复用，因此，应该尽可能将模板逻辑抽离出去
 - 可以尝试一些逻辑抽离逻辑
   1. 将逻辑抽取到一个方法中，即放到 `methods` 的选项中。但这样做会有一个明显的弊端————所有的data数据的使用过程都变成了一个方法的调用
@@ -1203,9 +1203,9 @@
                 - `fullName` 的初始值为 `'Kobe Bryant'`
               - 点击按钮时，调用 `changeFullName` 方法，将 `fullName` 设置为 `'Coder Why'`。
               - `set` 方法会将 `'Coder Why'` 拆分为 `firstName: 'Coder'` 和 `lastName: 'Why'` ，并更新数据。
-#### 监听器 watch
+### 监听器 watch
 - 在data属性中可以定义响应式数据，并在模板中使用。当响应式数据发生变化时，模板中对应的内容也会自动更新。但在某些情况下，需要监听某个响应式数据的变化，这时就需要使用监听器（watch）来实现
-##### watch的基本使用
+#### watch的基本使用
   - watch的使用
     - watchd的使用语法：
       - 选项：watch
@@ -1291,7 +1291,7 @@
         }
         ```
 
-##### watch
+#### watch
 - watch对象语法常见的配置有以下几种
   - handler: 要监听的回调函数，当监听属性发生变化时会调用该函数
   - deep: 是否深度监听对象或数组中的每个属性变化，默认值为 `false`
@@ -1492,3 +1492,245 @@
                       - `changeInfo` ：替换整个 `info` 对象。
                       - `changeInfoName` ：修改 `info.name` 属性。
                       -  `changeInfoBookName` ：修改嵌套对象 `info.book.name` 属性。
+- `watch` 字符串数组和API语法
+    1. 字符串和数组语法：
+       - 示例：
+         - ```js
+            const app = createApp({
+            data() {
+                return {
+                    b: 2,
+                    f: 5
+                };
+            },
+            watch: {
+                // 1. 字符串方法名，当 b 发生改变时会触发 someMethod 函数回调
+                b: 'someMethod',
+                // 2. 可传入回调数组它会逐一调用数组内的函数
+                f: [
+                    'handle1',
+                    function handle2(val, oldVal) {
+                        console.log('handle2 triggered');
+                    },
+                    {
+                        handler: function handle3(val, oldVal) {
+                            console.log('handle3 triggered');
+                        }
+                    }
+                ]
+            },
+            methods: {
+                someMethod() {
+                    console.log('b changed');
+                },
+                handle1() {
+                    console.log('handle1 triggered');
+                }
+            }
+            });
+            ```
+- `$watch` 的 API语法
+  - 除了字符串和数组语法，Vue.js3还提供了 `watchAPI` 进行监听
+  - `$watch`的语法为 `whis.$watch(source,callback,options)`
+    - `soucer` ：要监听的源
+    - `callback` ：监听的回调函数
+    - `options` ：额外选项，如 `beep` `immediate`
+    - 示例：
+      - ```js
+            created(){
+                this.$watch('info',(newValue,oldValue)=>{
+                    console.log(newValue,oldValue);
+                },{deep:true,immediate:true})
+            }
+        ```
+- watch深度监听
+1. 仅监听对象中的某个属性
+   - 在Vue3中，当需要监听一个对象时可以使用 `watch` 选项。如果想要监听对象的引用的变化或者监听属性内部的变化，那么只需要配置 `deep` 选项即可,除此之外还可以直接监听对象中某个属性的变化，而不是监听整个对象
+   - 示例：
+     - ```js
+        watch:{
+            "info.name":function(newValue,oldValue){
+                console.log(newValue,oldValue);
+            }
+        }
+        ```
+2. 监听函数的新值和旧值
+   - 使用深度监听时，监听函数的新值和旧值都指向同一个引用
+   - 示例：
+     - ```js
+        watch{
+            info:{
+                handler:function(newInfo,lodInfo){
+                    console.log(newInfo == lodInfo);
+                }
+            },
+            deep:true
+        }
+        ```
+3. 监听数组内部属性变化
+    - 深度监听除了可以监听对象还可以监听数组内部属性变化
+    - 示例：
+      - ```js
+            data(){
+                return{
+                    friends:[{name:'why'},{name:'kobe'}];
+                }
+            },
+            watch:{
+                handler(newFriends,lodFriend){
+                    console.log(newFriends,lodFriend);
+                },
+                deep:true
+            }
+            ```
+### 实例36购物车
+- 目录树:
+  - ```txt
+     实例36/
+     │
+     ├─index.html
+     │
+     ├─index.js
+     │
+     └── style.css
+     ```
+- index.html
+- ```html
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./style.css">
+        <title>Document</title>
+    </head>
+    <body>
+        <div id = 'app'></div>
+        <template id = 'my-app'>
+            <template v-if = 'books.length > 0'>
+                <table>
+                    <thead>
+                        <th>序号</th>
+                        <th>书名</th>
+                        <th>出版日期</th>
+                        <th>价格</th>
+                        <th>购买数量</th>
+                        <th>操作</th>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(book,index) in books">
+                            <td>{{index+1}}</td>
+                            <td>{{book.name}}</td>
+                            <td>{{book.date}}</td>
+                            <td>{{book.price}}</td>
+                            <td>
+                                <button :disabled="book.count <=1" @click="decrement(index)">-</button>
+                                <span class = 'counter'>{{book.count}}</span>
+                                <button @click="increment(index)">+</button>
+                            </td>
+                            <td><button @click = 'removeBook(index)'>删除</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h2>总价格：{{formatPrice(totalPrice)}}</h2>
+            </template>
+            <template v-else>
+                <h2>购物车为空</h2>
+            </template>
+        </template>
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+        <script src="./index.js"></script>
+    </body>
+    </html>   
+    ```
+- index.js
+  - ```js
+        const app = Vue.createApp({
+            template: '#my-app',
+            data() {
+                return {
+                    books: [
+                        {
+                            id: 1,
+                            name: '算法导论',
+                            date: '2006-09',
+                            price: 85.00,
+                            count: 1
+                        },
+                        {
+                            id: 2,
+                            name: 'javascript权威指南',
+                            date: '2013-09',
+                            price: 139.00,
+                            count: 1
+                        },
+                        {
+                            id: 3,
+                            name: '流畅的python',
+                            date: '2023-04',
+                            price: 199.80,
+                            count: 1
+                        },
+                        {
+                            id: 4,
+                            name: '代码大全',
+                            date: '2006-03',
+                            price: 128.00,
+                            count: 1
+                        },
+                    ]
+                };
+            },
+            computed: {
+                totalPrice() {
+                    let finalPrice = 0;
+                    for (let book of this.books) {
+                        finalPrice += book.price * book.count;
+                    }
+                    return finalPrice;
+                },
+                formatPrice() {
+                    return (price) => {
+                        return "￥" + price;
+                    };
+                }
+            },
+            methods: {
+                increment(index) {
+                    this.books[index].count++;
+                },
+                decrement(index) {
+                    if (this.books[index].count > 1) {
+                        this.books[index].count--;
+                    }
+                },
+                removeBook(index) {
+                    this.books.splice(index, 1);
+                }
+            }
+        });
+
+        app.mount('#app');
+    ```
+- style.css
+  - ```css
+        table {
+            border: 1px solid #e9e9e9;
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+        th, td{
+            padding: 16px;
+            border: 1px solid;
+            text-align: left;
+        }
+        th{
+            background-color: #f7f7f7;
+            color:#5c6b77;
+            font-weight: 600;
+        }
+        .counter{
+            margin:0 5px
+        }
+     ```
+            
