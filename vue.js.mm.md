@@ -1370,7 +1370,7 @@
             <template id = 'my-app'>
                 <h2>{{info.name}}</h2>
                 <h2>{{info.book.name}}</h2>
-                <button @cliak = 'changeInfo'>改变</button>
+                <button @click = 'changeInfo'>改变</button>
                 <button @click = 'changeIndfoName'>改变info.name</button>
                 <button @click = 'changeInfoBookName'>改变infon.book.name</button>
             </template>
