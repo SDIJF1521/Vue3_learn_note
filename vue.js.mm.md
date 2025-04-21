@@ -3,6 +3,9 @@
 - 该笔记为《Vue.js3+TypeScript完全学习指南》的个人学习笔记
 - 该笔记为个人笔记各位可以用作学习详细资料免费学习但是该笔记只记录了对于我个人觉得有用的
 - 如果要详细内容各位可以去看《Vue.js3+TypeScript完全学习指南》原书
+- 该笔记的代码大多都是《Vue.js3+TypeScript完全学习指南》一书上的
+- 该笔记仅用于学习和交流目的，而不是用于商业用途。
+- 原书购买[链接](https://item.jd.com/13861763.html)https://item.jd.com/13861763.html
 
 - 什么是vue: vue是一套用于构建是用户界面的渐进式框架
 - vue的特点:
@@ -1733,4 +1736,67 @@
             margin:0 5px
         }
      ```
-            
+## v-model和表单输入
+### v-model的基本使用
+- 在开发过程中表单提交是十分常见的功能,而获取用户提交的信息通常要用到双向绑定，而 `v-model` 指令就是Vue3用于实现双向绑定的重要指令，该指令的作用如下
+  1. 在表单 `<input>` `<textarea>` `<select>` 元素上创建双向绑定 
+  2. 根据控件的类型自动选取正确的方法来更新元素
+  3. `v-model` 指令$\color{yellow}{是一种语法糖}$它的底层实现原理如下
+     - 使用 `v-bind` 为value属性绑定变量
+     - 使用 `v-on` 绑定 input事件，并在事件回调中重新为value属性绑定的变量赋值
+- 实例37：
+  - ```html
+        <body>
+            <div id ='app'></div>
+            <template id = 'my-app'>
+                <input type = 'text' v-model = 'msg'>
+                <h2>{{msg}}</h2>
+            </template>
+            <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+            <script>
+                const app = Vue.createApp({
+                    template:'#my-app',
+                    data(){
+                        return{
+                            msg:'hello world'
+                        }
+                    }
+                }
+                ).mount('#app')
+            </script>
+        </body>
+        ```
+        - 代码运行后文本输入框内容为hello world，下方的标题也为hello world，更改文本输入框的内容下方标签内容也会跟着改变
+### v-model的实现原理
+- `v-model` 指令$\color{yellow}{是一种语法糖}原理参考 `v-model的基本使用`
+- 实例38：
+  - ```html
+        <body>
+            <div id ='app'></div>
+            <template id = 'my-app'>
+                <input type = 'text' :value = 'msg' @input = 'inputChange'>
+                <h2>{{msg}}</h2>
+            </template>
+            <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+            <script>
+                const app = Vue.createApp({
+                    template:'#my-app',
+                    data(){
+                        return{
+                            msg:'hello world'
+                        }
+                    },
+                    methods:{
+                        inputChange(event){
+                            this.msg = event.target.value;
+                        }
+                    }
+                }).mount('#app')
+            </script>
+        </body>
+        ```
+        - 效果同实例37
+### v-model绑定其他表单
+- `v-model` 指令不仅适用于input表单元素的双向绑定还可以用于其他的$\color{yellow}{表单元素}$ 如 `textarea` `checkbox` `radio` 和 `select` 元素等
+## Vue3.js组件化开发
+## 前端工程化
