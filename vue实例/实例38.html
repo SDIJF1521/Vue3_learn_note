@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id ='app'></div>
+    <template id = 'my-app'>
+        <input type = 'text' :value = 'msg' @input = 'inputChange'>
+        <h2>{{msg}}</h2>
+    </template>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const app = Vue.createApp({
+            template:'#my-app',
+            data(){
+                return{
+                    msg:'hello world'
+                }
+            },
+            methods:{
+                inputChange(event){
+                    this.msg = event.target.value;
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>
+    
