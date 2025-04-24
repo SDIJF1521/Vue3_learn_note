@@ -1798,5 +1798,207 @@
         - 效果同实例37
 ### v-model绑定其他表单
 - `v-model` 指令不仅适用于input表单元素的双向绑定还可以用于其他的$\color{yellow}{表单元素}$ 如 `textarea` `checkbox` `radio` 和 `select` 元素等
+- 实例39
+  - ```html
+      <body>
+          <!-- 应用挂载点 -->
+          <div id="app"></div>
+          <!-- 定义模板 -->
+          <template id="my-app">
+              <div>
+                  <!-- 文本输入框 -->
+                    <textarea cols="30" rows="3" v-model="intro"></textarea>
+                  <p>文本框的值: {{intro}}</p>
+                  <!-- 复选框 -->
+                  <span>2.</span>
+                  <label for="agree">
+                      <input id="agree" type="checkbox" v-model="isAgree">同意协议
+                  </label>
+                  <p>复选框的值: {{isAgree}}</p>
+                  <!-- 多选框 -->
+                  <span>3. 爱好：</span>
+                  <label for="basketball">
+                      <input id="basketball" type="checkbox" v-model="hobbies" value="basketball">篮球
+                  </label>
+                  <label for="football">
+                      <input id="football" type="checkbox" v-model="hobbies" value="football">足球
+                  </label>
+                  <label for="tennis">
+                      <input id="tennis" type="checkbox" v-model="hobbies" value="tennis">网球
+                  </label>
+                  <p>多选框的值: {{hobbies}}</p>
+                  <!-- 单选框 -->
+                  <span>4. 性别</span>
+                  <label for="male">
+                      <input id="male" type="radio" v-model="gender" value="male">男
+                  </label>
+                  <label for="female">
+                      <input id="female" type="radio" v-model="gender" value="female">女
+                  </label>
+                  <p>单选按钮的值: {{gender}}</p>
+                  <!-- 下拉选择框 -->
+                  <span>5. 喜欢的水果</span>
+                  <select v-model="fruit" multiple size="2">
+                      <option value="apple">苹果</option>
+                      <option value="orange">橘子</option>
+                      <option value="banana">香蕉</option>
+                  </select>
+                  <p>选择的水果: {{fruit}}</p>
+              </div>
+          </template>
+          <!-- 引入 Vue 库 -->
+          <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+          <script>
+              const { createApp } = Vue;
+              // 创建 Vue 应用实例
+              const app = createApp({
+                  template: '#my-app',
+                  data() {
+                      return {
+                          intro: 'hello world',
+                          isAgree: false,
+                          hobbies: ["basketball"],
+                          gender: '',
+                          fruit: ['orange']
+                      };
+                  }
+              });
+              // 挂载应用
+              app.mount('#app');
+          </script>
+      </body>     
+      ```
+
+    - 运行效果：
+        1. 文本输入框：
+
+           - 初始值为 hello world。
+           - 修改文本框内容时，页面上的绑定值会实时更新。
+        2. 复选框：
+
+            - 初始状态为未选中（false）。
+            - 勾选复选框后，isAgree 的值变为 true，页面显示更新。
+        3. 多选框：
+
+            - 初始值为 ["basketball"]。
+            - 勾选其他选项（如足球、网球）后，hobbies 数组会动态更新。
+        4. 单选框：
+
+            - 初始值为空字符串。
+            - 选择“男”或“女”后，gender 的值会更新为对应的选项。
+        5. 下拉选择框：
+
+            - 初始值为 ["orange"]。
+            - 选择其他水果（如苹果、香蕉）后，fruit 数组会动态更新。
+    - 功能描述：
+       - 文本输入框（textarea）
+       - 复选框（checkbox）
+       - 多选框（checkbox，绑定数组）
+       - 单选框（radio）
+       - 下拉选择框（select，支持多选） 
+   - 代码逻辑：
+      1. textarea 文本输入框：
+
+         - 使用 v-model="intro" 实现双向绑定。
+         - 文本框的值会实时更新到 intro，并在页面上显示。
+      2. 复选框（checkbox）：
+
+         - 使用 v-model="isAgree" 实现单个复选框的双向绑定。
+         - 当复选框被选中时，isAgree 的值为 true，否则为 false。
+      3. 多选框（checkbox，绑定数组）：
+
+         - 使用 v-model="hobbies" 实现多选框的双向绑定。
+         - hobbies 是一个数组，选中的值会自动添加到数组中，取消选中时会从数组中移除。
+      4. 单选框（radio）：
+
+         - 使用 v-model="gender" 实现单选框的双向绑定。
+         - gender 的值会根据选中的单选框更新为对应的 value 值（如 male 或 female）。
+      5. 下拉选择框（select）：
+
+         - 使用 v-model="fruit" 实现下拉选择框的双向绑定。
+         - multiple 属性允许多选，size="2" 设置显示的选项数量。
+         - fruit 是一个数组，选中的选项会自动添加到数组中。 
+### v-model值的绑定
+- 在使用 `v-on` 指令时，可以通过修饰符完成一些特殊的操作，如 `.stop` 修饰符阻止冒泡事件。而 `v-model` 指令也支持使用修饰符完成一些特殊的操作
+- 在Vue3中 `v-model` 指令常见的修饰符如下
+  - `.lazy` ：将输入内容的更新延迟到change事件触发时在进行，而不是每次输入内容都要更新
+  - `.number` ：将输入内容自动转为数字类型
+  - `.trim` ：去除输入内容的首尾空格
+### .lazy修饰符
+- 在默认情况下 `v-model` 指令绑定的时 input事件。也是说，$\color{yellow}{在每次输入后，就会将最新的值和绑定属性进行同步更新}$
+- 实例40：
+  - ```html
+        <body>
+            <div id = 'app'></div>
+            <template id = 'my-app'>
+                <input type='text' v-model.lazy = 'content'>
+                <h2> {{content}}</h2>
+            </template>
+            <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+            <script>
+                const app = Vue.createApp({
+                    template:'#my-app',
+                    data(){
+                        return{
+                            content:'hello world'
+                        }
+                    }
+                })
+            </script>
+        </body>
+        ```
+        - 代码运行后文本框和标题的内容为hello world 修改文本框的内容标题内容不发生改变，按下回车后标题内容会同步为文本框的内容
+### .number修饰符
+- 对于 `.namber` 修饰符的作用由下面的实例来体现
+- 实例41:
+  - ```html
+        <body>
+            <div id="app"></div>
+            <template id="my-app">
+                <input type="text" v-model.lazy="msg">
+                <h2>{{msg}}->{{typeof msg}}类型</h2>
+                <input type="text" v-model.lazy.number="msg1">
+                <h2>{{msg1}}->{{typeof msg1}}类型</h2>
+            </template>
+            <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+            <script>
+                const app = Vue.createApp({
+                    template: '#my-app',
+                    data() {
+                        return {
+                            msg: null,
+                            msg1: null
+                        };
+                    }
+                });
+                app.mount('#app');
+            </script>
+        </body>
+        ```
+        - 运行后输入对上下文本框分别数字回车后可以看到使用了 `.number` 修饰符的绑定的属性内容为number类型而没有使用的为string类型
+- 从实例41中就可以看出 `.number` 修饰符的内容为将 `v-model` 指令绑定的内容属性改为数值型
+### .trim修饰符
+- 如果要自动过滤用户输入内容首尾的空白字符，那么可以使用 `v-model` 指令的 `.trim` 修饰符
+- 实例42:
+  - ```html
+        <body>
+            <div id = 'app'></div>
+            <template id = 'my-app'>
+                <input type = 'text' v-model.trim = 'msg'>
+                <h2>{{msg}}
+            </template>
+            <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+            <script>
+                const app = Vue.createApp({
+                    template: '#my-app',
+                    data() {
+                        return {
+                            msg: null,
+                        }
+                    }
+                }).mount('#app');
+            </script>
+        </body>
+        ```
 ## Vue3.js组件化开发
 ## 前端工程化
