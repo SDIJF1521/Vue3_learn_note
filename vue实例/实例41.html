@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <template id="my-app">
+        <input type="text" v-model.lazy="msg">
+        <h2>{{msg}}->{{typeof msg}}类型</h2>
+        <input type="text" v-model.lazy.number="msg1">
+        <h2>{{msg1}}->{{typeof msg1}}类型</h2>
+    </template>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const app = Vue.createApp({
+            template: '#my-app',
+            data() {
+                return {
+                    msg: null,
+                    msg1: null
+                };
+            }
+        });
+        app.mount('#app');
+    </script>
+</body>
+
+</html>

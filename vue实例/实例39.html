@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 应用挂载点 -->
+    <div id="app"></div>
+    <!-- 定义模板 -->
+    <template id="my-app">
+        <div>
+            <!-- 文本输入框 -->
+            <textarea cols="30" rows="3" v-model="intro"></textarea>
+            <p>文本框的值: {{intro}}</p>
+            <!-- 复选框 -->
+            <span>2.</span>
+            <label for="agree">
+                <input id="agree" type="checkbox" v-model="isAgree">同意协议
+            </label>
+            <p>复选框的值: {{isAgree}}</p>
+            <!-- 多选框 -->
+            <span>3. 爱好：</span>
+            <label for="basketball">
+                <input id="basketball" type="checkbox" v-model="hobbies" value="basketball">篮球
+            </label>
+            <label for="football">
+                <input id="football" type="checkbox" v-model="hobbies" value="football">足球
+            </label>
+            <label for="tennis">
+                <input id="tennis" type="checkbox" v-model="hobbies" value="tennis">网球
+            </label>
+            <p>多选框的值: {{hobbies}}</p>
+            <!-- 单选框 -->
+            <span>4. 性别</span>
+            <label for="male">
+                <input id="male" type="radio" v-model="gender" value="male">男
+            </label>
+            <label for="female">
+                <input id="female" type="radio" v-model="gender" value="female">女
+            </label>
+            <p>单选按钮的值: {{gender}}</p>
+            <!-- 下拉选择框 -->
+            <span>5. 喜欢的水果</span>
+            <select v-model="fruit" multiple size="2">
+                <option value="apple">苹果</option>
+                <option value="orange">橘子</option>
+                <option value="banana">香蕉</option>
+            </select>
+            <p>选择的水果: {{fruit}}</p>
+        </div>
+    </template>
+    <!-- 引入 Vue 库 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const { createApp } = Vue;
+        // 创建 Vue 应用实例
+        const app = createApp({
+            template: '#my-app',
+            data() {
+                return {
+                    intro: 'hello world',
+                    isAgree: false,
+                    hobbies: ["basketball"],
+                    gender: '',
+                    fruit: ['orange']
+                };
+            }
+        });
+        // 挂载应用
+        app.mount('#app');
+    </script>
+</body>
+
+</html>    
