@@ -2189,8 +2189,11 @@
               - 挂载应用实例：使用 `app.mount` 方法挂载应用实例。
               - 全局注册组件：使用 `app.component` 方法全局注册组件。
         
-
-
+- 组件命名规范
+  1. 短横线隔开命名法
+    - 组件名称使用短横线隔开，如 `my-component`。
+  2. 大驼峰命名法
+    - 组件名称使用大驼峰命名法，如 `MyComponent`。
             
 
 #### 局部组件
@@ -2272,5 +2275,178 @@
               - 响应式数据：使用 Vue3 的响应式数据绑定功能。
               - 事件处理：使用 Vue3 的事件处理功能。
               - 挂载应用实例：使用 `app.mount` 方法挂载应用实例。
-              - 局部注册组件：在 `components` 选项中注册局部组件。 
+              - 局部注册组件：在 `components` 选项中注册局部组件。
+#### Vue 开发模式
+- 随着项目越来越复杂，我们需要采用组件化的方式进行开发，这意味着每个组件都会有自己的模板、样式和逻辑代码。为了更好地组织这些代码，Vue 提供了单文件组件（Single File Component）格式的支持。
+- Vue3提供了两种开发模式
+  1. **单文件组件**：将模板、脚本和样式放在一个文件中，通常以 `.vue` 为后缀名。单文件组件的结构如下
+     ```vue
+     <template>
+         <!-- 模板部分 -->
+     </template>
+     <script>
+         // 脚本部分
+     </script>
+     <style scoped>
+         /* 样式部分 */
+     </style>
+     ```
+  2. **分离式组件**：将模板、脚本和样式分开存放，通常使用 `.html`、`.js` 和 `.css` 文件。分离式组件的结构如下
+     ```
+     ├─index.html
+     │
+     ├─index.js
+     │
+     └── style.css
+     ```
+#### Vue3支持的SFC
+- 使用 `.vue` 文件编写Vue.js组件的常见方式有一下两种
+  1. 使用 `Vue CLI` 或 `create-vue` 创建的Vue项目 
+  2. 使用 `webpack` `Rolluo` 或 `vite` 等构建工具进行打包和编译
 ## 前端工程化
+### 前端工程化概述
+- 前端工程化是指将前端开发过程中的各个环节进行规范化、标准化和自动化的过程。前端工程化的目的是提高前端开发的效率、质量和可维护性。前端工程化的主要内容包括
+  1. 代码规范：制定统一的代码规范和风格，确保代码的一致性和可读性。
+  2. 模块化：将代码拆分成多个模块，每个模块负责特定的功能，提高代码的复用性和可维护性。
+  3. 自动化构建：使用构建工具（如 `webpack`、`gulp`、`grunt` 等）自动化处理代码的编译、打包、压缩等操作，提高开发效率。
+  4. 测试：编写单元测试、集成测试和端到端测试，确保代码的正确性和稳定性。
+  5. 部署：使用自动化部署工具，将代码部署到生产环境，提高部署效率和可靠性。
+  6. 版本控制：使用版本控制工具（如 `git`）管理代码的版本，确保代码的可追溯性和协作性。
+### 前端工程化的工具
+- 前端工程化的工具主要包括以下几类
+  1. **构建工具**：用于自动化处理代码的编译、打包、压缩等操作，如 `webpack`、`gulp`、`grunt` 等。
+  2. **测试工具**：用于编写单元测试、集成测试和端到端测试，如 `jest`、`mocha`、`cypress` 等。
+  3. **版本控制工具**：用于管理代码的版本，如 `git`、`svn` 等。
+  4. **自动化部署工具**：用于将代码自动部署到生产环境，如 `jenkins`、`travis-ci` 等。
+  5. **代码规范工具**：用于检查代码的规范性和风格，如 `eslint`、`prettier` 等。
+### 认识 webpack
+- `webpack` 是一个现代 JavaScript 应用程序的静态模块打包器。它会将应用程序中的所有模块（JavaScript、CSS、图片等）打包成一个或多个 bundle 文件，以便在浏览器中使用。`webpack` 的主要特点包括
+  1. **模块化**：支持 CommonJS、AMD、ES6 等模块化规范，可以将代码拆分成多个模块进行管理。
+  2. **插件机制**：提供丰富的插件机制，可以通过插件扩展 `webpack` 的功能，如代码压缩、文件复制等。
+  3. **热更新**：支持热更新（Hot Module Replacement），可以在不刷新页面的情况下更新代码，提高开发效率。
+  4. **代码分割**：支持代码分割（Code Splitting），可以将代码拆分成多个 bundle 文件，按需加载，提高性能。
+  5. **Tree Shaking**：支持 Tree Shaking，可以去除未使用的代码，减小 bundle 文件的体积。
+  6. **支持多种资源**：支持处理 JavaScript、CSS、图片、字体等多种资源，可以将它们打包成一个或多个 bundle 文件。
+### Vue CLI脚手架
+- `Vue CLI` 是一个基于 `webpack` 的脚手架工具，可以快速搭建 Vue.js 项目。它提供了一系列的命令行工具和配置选项，可以帮助开发者快速创建、构建和部署 Vue.js 应用程序。`Vue CLI` 的主要特点包括
+  1. **快速创建项目**：使用 `vue create` 命令可以快速创建一个新的 Vue.js 项目，自动配置 `webpack`、`babel`、`eslint` 等工具。
+  2. **插件系统**：支持插件系统，可以通过插件扩展项目的功能，如添加路由、状态管理、测试等。
+  3. **热更新**：支持热更新（Hot Module Replacement），可以在不刷新页面的情况下更新代码，提高开发效率。
+  4. **构建优化**：提供了一系列的构建优化选项，如代码分割、Tree Shaking、压缩等，提高应用程序的性能。
+  5. **多种预设**：提供了多种预设选项，可以根据项目需求选择不同的预设，如 `webpack`、`vuex`、`vue-router` 等。
+  6. **支持多种语言**：支持多种语言，如 JavaScript、TypeScript、Sass、Less 等，可以根据项目需求选择不同的语言。
+#### 安装node.js
+- `node.js` 是一个基于 Chrome V8 引擎的 JavaScript 运行时，可以在服务器端运行 JavaScript 代码。`node.js` 提供了丰富的 API 和模块，可以用于构建高性能的网络应用程序。安装 `node.js` 的步骤如下
+  1. 下载 `node.js` 安装包：访问 [node.js 官网](https://nodejs.org/) 下载适合你操作系统的安装包。
+  2. 安装 `node.js`：双击下载的安装包，按照提示完成安装。
+  3. 验证安装：打开命令行终端，输入以下命令验证是否安装成功
+     ```bash
+     node -v
+     npm -v
+     ```
+  - 如果输出版本号，则表示安装成功。
+#### 安装Vue CLI
+- `Vue CLI` 是一个基于 `webpack` 的脚手架工具，可以快速搭建 Vue.js 项目。安装 `Vue CLI` 的步骤如下
+  1. 打开命令行终端，输入以下命令安装 `Vue CLI`
+     ```bash
+     npm install -g @vue/cli
+     ```
+  2. 验证安装：输入以下命令验证是否安装成功
+     ```bash
+     vue --version
+     ```
+  - 如果输出版本号，则表示安装成功。
+#### 创建Vue项目
+- 使用 `Vue CLI` 创建 Vue.js 项目的步骤如下
+  1. 打开命令行终端，输入以下命令创建新的 Vue.js 项目
+     ```bash
+     vue create my-project
+     ```
+  2. 在创建过程中，选择默认配置或手动配置，根据项目需求选择不同的选项。
+     - 默认配置包括 Babel、ESLint 等。
+     - 手动所需功能。
+       - 以下是可供选中的功能
+         - `Babel`：用于将 ES6+ 代码转换为向后兼容的 JavaScript 代码。
+         - `TypeScript`：是否使用TypeScript。
+         - `Progressive Web App (PWA)`：是否使用 PWA,PWA 是一种可以离线访问的 Web 应用程序。
+         - `Router`：是否使用 Vue Router，Vue Router 是 Vue.js 的路由管理器。
+         - `Vuex`：是否使用 Vuex，Vuex 是 Vue.js 的状态管理模式。
+         - `CSS Pre-processors`：是否使用 CSS 预处理器，如 Sass、Less 等。
+         - `Linter / Formatter`：是否使用代码检查和格式化工具，如 ESLint、Prettier 等。
+         - `Unit Testing`：是否使用单元测试工具，如 Jest、Mocha 等。
+         - `E2E Testing`：是否使用端到端测试工具，如 Cypress、Nightwatch 等。
+  3. 进入项目目录，输入以下命令启动开发服务器
+     ```bash
+     cd my-project
+     npm run serve
+     ```
+  - 如果浏览器自动打开了 `http://localhost:8080`，则表示项目创建成功。
+- 使用 `npm` 创建项目的命令如下
+  ```bash
+  npm init vue@latest my-project
+  ```
+  - 该命令会创建一个新的 Vue.js 项目，并自动安装所需的依赖项。
+  - 在创建过程中，选择默认配置或手动配置，根据项目需求选择不同的选项。
+    - 创建完成后，进入项目目录，输入以下命令启动开发服务器
+        ```bash
+        cd my-project
+        npm install
+        npm run dev
+        ```
+    - 如果浏览器自动打开了 `http://localhost:5173`，则表示项目创建成功。
+#### Vue3项目目录结构
+- 使用 `Vue CLI` 创建的 Vue.js 项目目录结构如下
+  ```
+  my-project
+    ├─node_modules
+    │
+    ├─public
+    │   ├─favicon.ico
+    │   ├─index.html
+    │   └─manifest.json
+    │
+    ├─src
+    │   ├─assets
+    │   │   └─logo.png
+    │   ├─components
+    │   │   └─HelloWorld.vue
+    │   ├─App.vue
+    │   ├─main.js
+    │   └─router
+    │       └─index.js
+    │
+    ├─.browserlistrc
+    ├─.gitignore
+    ├─.jsconfig.json
+    ├─package-lock.json
+    ├─package.json
+    ├─README.md
+    └─vite.config.js
+  ```
+- 目录结构说明
+  - `node_modules`：存放项目依赖的第三方模块。
+  - `public`：存放静态资源，如 `index.html`、`favicon.ico` 等。
+  - `src`：存放项目的源代码，包括组件、样式、路由等。
+    - `assets`：存放静态资源，如图片、字体等。
+    - `components`：存放 Vue 组件。
+    - `App.vue`：根组件，整个应用的入口组件。
+    - `main.js`：应用的入口文件，用于创建 Vue 实例和挂载根组件。
+    - `router`：存放路由配置文件。
+  - `.browserlistrc`：配置浏览器支持列表的文件。
+  - `.gitignore`：Git 忽略文件列表。
+  - `.jsconfig.json`：JavaScript 配置文件。
+  - `package-lock.json`：锁定依赖版本的文件。
+  - `package.json`：项目的配置文件，包含项目的基本信息和依赖列表。
+  - `README.md`：项目的说明文件。
+  - `vite.config.js`：Vite 的配置文件。
+#### 项目运行和打包
+- 对于运行和打包， `Vue CLI` 脚手架已经在 package.json 文件中提供了相应的命令，代码如下
+  - ```json
+    {
+      "scripts": {
+        "serve": "vue-cli-service serve",  # 1.开发环境，启动项目脚本
+        "build": "vue-cli-service build",  # 2.生产环境，打包项目脚本
+        "lint": "vue-cli-service lint"     # 3.代码检查脚本
+      }
+    }
+  ```
