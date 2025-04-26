@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        .comps-a,.comps-b{
+            border: 1px solid #999;
+            margin: 3px;
+        }
+    </style>
+    <div id = 'app'></div>
+    <template id = 'my-app'>
+        <div class="comps-b">
+            <input type="text" v-model = 'msg'>
+            <h4>{{msg}}</h4>
+        </div>
+        <div class="comps-a">
+            <h4>{{title}}</h4>
+            <p>{{desc}}</p>
+            <button @click = 'btnClick'>按钮</button>
+        </div>
+    </template>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const app = Vue.createApp({
+            template:'#my-app',
+            data(){
+                return{
+                    msg : 'hello world',
+                    title:'标题',
+                    desc:'显示区域'
+                }
+            },
+            methods:{
+                btnClick(){
+                    console.log('按钮被点击了');
+                    
+                }
+            }
+        }).mount('#app')
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id = 'app'></div>
+    <template id = 'my-app'>
+        <h2>局部组件</h2>
+        <comps-a></comps-a>
+        <comps-b></comps-b>
+    </template>
+    <template id = 'comps-a'>
+        <div class="comps-a">
+            <h4>{{title}}</h4>
+            <p>{{desc}}</p>
+            <button @click = 'btnClick'>按钮</button>
+        </div>
+    </template>
+    <template id = 'comps-b'>
+        <div class="comps-b">
+            <input type="text" v-model = 'msg'>
+            <h4>{{msg}}</h4>
+        </div>
+    </template>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        const App = {
+            template:'#my-app',
+            data(){
+                return{
+                    msg:'hello world'
+                }
+            },
+            components:{
+                'comps-a':{
+                    template:'#comps-a',
+                    data(){
+                        return{
+                            title:'标题',
+                            desc:'显示区域'
+                        }
+                    },
+                    methods:{
+                        btnClick(){
+                            console.log('按钮被点击了')
+                        }
+                    }
+                },
+                'comps-b':{
+                    template:'#comps-b',
+                    data(){
+                        return{
+                            msg:'hello world'
+                        }
+                    }
+                }
+            }
+        };
+        const app = Vue.createApp(App).mount('#app');
+    </script>
+</body> 
+</html>
