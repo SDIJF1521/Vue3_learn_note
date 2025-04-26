@@ -493,31 +493,31 @@
             - 运行后可以看到标签内有一个名为 `username` 的属性其值为 `kobe`
 - 绑定一个对象
     - 实例15：
-      - ```html
-            <body>
-                <div id='app'></div>
-                <template id = 'my-app'>
-                    <div v-bind='info'>动态绑定一个对象</div>
-                    <div :='info'>动态绑定一个对象</div>
-                </template>
-                <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-                <script>
-                    const App = Vue.createApp(
-                        {
-                            template:'#my-app',
-                            data(){
-                                return{
-                                    info:{
-                                        name:'why',
-                                        age:18,
-                                        heighe:1.88
+        - ```html
+                <body>
+                    <div id='app'></div>
+                    <template id = 'my-app'>
+                        <div v-bind='info'>动态绑定一个对象</div>
+                        <div :='info'>动态绑定一个对象</div>
+                    </template>
+                    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+                    <script>
+                        const App = Vue.createApp(
+                            {
+                                template:'#my-app',
+                                data(){
+                                    return{
+                                        info:{
+                                            name:'why',
+                                            age:18,
+                                            heighe:1.88
+                                        }
                                     }
                                 }
                             }
-                        }
-                    ).mount('#app')
-                </script>
-            </body>
+                        ).mount('#app')
+                    </script>
+                </body>
             ```
           - 运行后可以看到return返回的对象内容被渲染为标签的属性了
 #### v-on指令
@@ -1103,7 +1103,7 @@
                     }).mount('#app');
                 </script>
             </body>
-            ```
+        ```
 ---
 - 计算属性和methods的区别
   - 计算属性和methods的区别不大只是$\color{red}{计算属性会有缓存}，$具体的区别可以看下面的实例
@@ -1745,30 +1745,30 @@
      - 使用 `v-bind` 为value属性绑定变量
      - 使用 `v-on` 绑定 input事件，并在事件回调中重新为value属性绑定的变量赋值
 - 实例37：
-  - ```html
-        <body>
-            <div id ='app'></div>
-            <template id = 'my-app'>
-                <input type = 'text' v-model = 'msg'>
-                <h2>{{msg}}</h2>
-            </template>
-            <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-            <script>
-                const app = Vue.createApp({
-                    template:'#my-app',
-                    data(){
-                        return{
-                            msg:'hello world'
+    - ```html
+            <body>
+                <div id ='app'></div>
+                <template id = 'my-app'>
+                    <input type = 'text' v-model = 'msg'>
+                    <h2>{{msg}}</h2>
+                </template>
+                <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+                <script>
+                    const app = Vue.createApp({
+                        template:'#my-app',
+                        data(){
+                            return{
+                                msg:'hello world'
+                            }
                         }
                     }
-                }
-                ).mount('#app')
-            </script>
-        </body>
+                    ).mount('#app')
+                </script>
+            </body>
         ```
-        - 代码运行后文本输入框内容为hello world，下方的标题也为hello world，更改文本输入框的内容下方标签内容也会跟着改变
+      - 代码运行后文本输入框内容为hello world，下方的标题也为hello world，更改文本输入框的内容下方标签内容也会跟着改变
 ### v-model的实现原理
-- `v-model` 指令$\color{yellow}{是一种语法糖}原理参考 `v-model的基本使用`
+- `v-model` 指令$\color{yellow}{是一种语法糖}$原理参考 `v-model的基本使用`
 - 实例38：
   - ```html
         <body>
@@ -1795,7 +1795,7 @@
             </script>
         </body>
         ```
-        - 效果同实例37
+      - 效果同实例37
 ### v-model绑定其他表单
 - `v-model` 指令不仅适用于input表单元素的双向绑定还可以用于其他的$\color{yellow}{表单元素}$ 如 `textarea` `checkbox` `radio` 和 `select` 元素等
 - 实例39
@@ -1927,12 +1927,159 @@
 ### .lazy修饰符
 - 在默认情况下 `v-model` 指令绑定的时 input事件。也是说，$\color{yellow}{在每次输入后，就会将最新的值和绑定属性进行同步更新}$
 - 实例40：
-  - ```html
+    - ```html
+            <body>
+                <div id = 'app'></div>
+                <template id = 'my-app'>
+                    <input type='text' v-model.lazy = 'content'>
+                    <h2> {{content}}</h2>
+                </template>
+                <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+                <script>
+                    const app = Vue.createApp({
+                        template:'#my-app',
+                        data(){
+                            return{
+                                content:'hello world'
+                            }
+                        }
+                    })
+                </script>
+            </body>
+        ```
+      - 代码运行后文本框和标题的内容为hello world 修改文本框的内容标题内容不发生改变，按下回车后标题内容会同步为文本框的内容
+      - 说明：
+        1. 功能描述：
+            - 该实例展示了 Vue 中 `v-model` 指令的 `.lazy` 修饰符的使用。
+            - 当用户在输入框中输入内容时，`.lazy` 修饰符会延迟更新绑定的数据，直到用户按下回车键。
+        2. 代码逻辑：
+            - 数据绑定：
+            - `v-model.lazy` 将输入框的值与 `content` 数据进行双向绑定，并延迟更新。
+            - 方法：
+            - 当用户输入内容并按下回车键时，`content` 的值会自动更新到页面。
+        3. 关键点:
+            - `.lazy` 修饰符：实现了延迟更新的功能。
+            - 响应式更新：当输入框内容变化时，`content` 会在按下回车后自动更新到页面。
+### .number修饰符
+- 对于 `.namber` 修饰符的作用由下面的实例来体现
+- 实例41:
+    - ```html
+            <body>
+                <div id="app"></div>
+                <template id="my-app">
+                    <input type="text" v-model.lazy="msg">
+                    <h2>{{msg}}->{{typeof msg}}类型</h2>
+                    <input type="text" v-model.lazy.number="msg1">
+                    <h2>{{msg1}}->{{typeof msg1}}类型</h2>
+                </template>
+                <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+                <script>
+                    const app = Vue.createApp({
+                        template: '#my-app',
+                        data() {
+                            return {
+                                msg: null,
+                                msg1: null
+                            };
+                        }
+                    });
+                    app.mount('#app');
+                </script>
+            </body>
+        ```
+    - 运行后输入对上下文本框分别数字回车后可以看到使用了 `.number` 修饰符的绑定的属性内容为number类型而没有使用的为string类型
+    - 说明：
+          1. 功能描述：
+            - 该实例展示了 Vue 中 `v-model` 指令的 `.number` 修饰符的使用。
+            - 当用户在输入框中输入数字时，`.number` 修饰符会自动将输入的字符串转换为数字类型。
+          2. 代码逻辑：
+            - 数据绑定：
+            - `v-model.lazy` 将输入框的值与 `msg` 和 `msg1` 数据进行双向绑定。
+            - `v-model.lazy.number` 将输入框的值与 `msg1` 数据进行双向绑定，并将其转换为数字类型。
+            - 方法：
+            - 当用户输入内容并按下回车键时，`msg` 和 `msg1` 的值会自动更新到页面。
+          3. 关键点:
+            - `.lazy` 修饰符：实现了延迟更新的功能。
+            - `.number` 修饰符：实现了将输入内容转换为数字类型的功能。
+            - 响应式更新：当输入框内容变化时，`msg` 和 `msg1` 会自动更新到页面。
+- 从实例41中就可以看出 `.number` 修饰符的内容为将 `v-model` 指令绑定的内容属性改为数值型
+### .trim修饰符
+- 如果要自动过滤用户输入内容首尾的空白字符，那么可以使用 `v-model` 指令的 `.trim` 修饰符
+- 实例42:
+    - ```html
+            <body>
+                <div id = 'app'></div>
+                <template id = 'my-app'>
+                    <input type = 'text' v-model.trim = 'msg'>
+                    <h2>{{msg}}
+                </template>
+                <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+                <script>
+                    const app = Vue.createApp({
+                        template: '#my-app',
+                        data() {
+                            return {
+                                msg: null,
+                            }
+                        }
+                    }).mount('#app');
+                </script>
+            </body>
+        ```
+      - 代码运行后输入文本框内容前后加上空格，回车后可以看到标题的内容没有空格
+      - 说明：
+          1. 功能描述：
+              - 该实例展示了 Vue 中 `v-model` 指令的 `.trim` 修饰符的使用。
+              - 当用户在输入框中输入内容时，`.trim` 修饰符会自动去除首尾的空格。
+          2. 代码逻辑：
+              - 数据绑定：
+                - `v-model.trim` 将输入框的值与 `msg` 数据进行双向绑定，并去除首尾空格。
+              - 方法：
+                - 当用户输入内容并按下回车键时，`msg` 的值会自动更新到页面，并去除首尾空格。
+          3. 关键点:
+              - `.trim` 修饰符：实现了去除输入内容首尾空格的功能。
+              - 响应式更新：当输入框内容变化时，`msg` 会自动更新到页面，并去除首尾空格。
+## Vue3.js组件化开发
+### 认识组件化
+- 组件化是指将一个复杂的应用拆分成多个小的、独立的、可复用的组件，每个组件负责处理特定的功能或视图。组件化开发可以提高代码的可维护性、可读性和复用性。
+- Vue3.js是一个基于组件化开发的前端框架，它允许开发者将应用拆分成多个组件，每个组件可以独立开发、测试和维护。Vue3.js的组件化开发有以下几个特点
+  1. 组件是Vue3.js的核心概念，所有的Vue3.js应用都是由组件组成的。
+  2. 组件可以嵌套，父组件可以包含子组件，子组件也可以包含其他子组件，从而形成一个树形结构。
+  3. 组件可以复用，可以在不同的地方使用同一个组件，从而提高代码的复用性。
+  4. 组件可以接收参数（props），父组件可以向子组件传递数据，子组件也可以向父组件发送事件，从而实现数据的双向绑定。
+  5. 组件可以有自己的状态（data），每个组件都有自己的数据和方法，从而实现组件的独立性。
+### Vue3的组件化
+- Vue3.js的组件化开发是基于Vue3.js的核心概念和特性实现的，Vue3.js的组件化开发有以下几个特点
+  1. Vue3.js的组件是一个包含模板、脚本和样式的独立单元，可以在不同的地方使用同一个组件，从而提高代码的复用性。
+  2. Vue3.js的组件可以嵌套，父组件可以包含子组件，子组件也可以包含其他子组件，从而形成一个树形结构。
+  3. Vue3.js的组件可以接收参数（props），父组件可以向子组件传递数据，子组件也可以向父组件发送事件，从而实现数据的双向绑定。
+  4. Vue3.js的组件可以有自己的状态（data），每个组件都有自己的数据和方法，从而实现组件的独立性。
+  5. Vue3.js的组件可以使用生命周期钩子函数，在组件的不同阶段执行特定的操作，如创建、更新和销毁等。
+### Vue3注册组件
+#### 根组件
+- Vue3.js的根组件是Vue3.js应用的入口组件，所有的Vue3.js应用都必须有一个根组件。根组件可以包含其他子组件，从而形成一个树形结构。根组件的注册方法如下
+  1. 使用 `createApp` 方法创建Vue3.js应用实例
+  2. 在Vue3.js应用实例中使用 `app.mount` 方法挂载应用实例
+- 实例43:
+    - ```html
         <body>
+            <style>
+                .comps-a,.comps-b{
+                    border: 1px solid #999;
+                    margin: 3px;
+                }
+            </style>
             <div id = 'app'></div>
             <template id = 'my-app'>
-                <input type='text' v-model.lazy = 'content'>
-                <h2> {{content}}</h2>
+                <div class="comps-b">
+                    <input type="text" v-model = 'msg'>
+                    <h4>{{msg}}</h4>
+                </div>
+                <div class="comps-a">
+                    <h4>{{title}}</h4>
+                    <p>{{desc}}</p>
+                    <button @click = 'btnClick'>按钮</button>
+                </div>
             </template>
             <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
             <script>
@@ -1940,104 +2087,190 @@
                     template:'#my-app',
                     data(){
                         return{
-                            content:'hello world'
+                            msg : 'hello world',
+                            title:'标题',
+                            desc:'显示区域'
+                        }
+                    },
+                    methods:{
+                        btnClick(){
+                            console.log('按钮被点击了');
+                            
                         }
                     }
-                })
+                }).mount('#app')
             </script>
+            
         </body>
         ```
-        - 代码运行后文本框和标题的内容为hello world 修改文本框的内容标题内容不发生改变，按下回车后标题内容会同步为文本框的内容
-        - 说明：
-          1. 功能描述：
-             - 该实例展示了 Vue 中 `v-model` 指令的 `.lazy` 修饰符的使用。
-             - 当用户在输入框中输入内容时，`.lazy` 修饰符会延迟更新绑定的数据，直到用户按下回车键。
-          2. 代码逻辑：
-             - 数据绑定：
-               - `v-model.lazy` 将输入框的值与 `content` 数据进行双向绑定，并延迟更新。
-             - 方法：
-               - 当用户输入内容并按下回车键时，`content` 的值会自动更新到页面。
-          3. 关键点:
-             - `.lazy` 修饰符：实现了延迟更新的功能。
-             - 响应式更新：当输入框内容变化时，`content` 会在按下回车后自动更新到页面。
-### .number修饰符
-- 对于 `.namber` 修饰符的作用由下面的实例来体现
-- 实例41:
-  - ```html
-        <body>
-            <div id="app"></div>
-            <template id="my-app">
-                <input type="text" v-model.lazy="msg">
-                <h2>{{msg}}->{{typeof msg}}类型</h2>
-                <input type="text" v-model.lazy.number="msg1">
-                <h2>{{msg1}}->{{typeof msg1}}类型</h2>
-            </template>
-            <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-            <script>
-                const app = Vue.createApp({
-                    template: '#my-app',
-                    data() {
-                        return {
-                            msg: null,
-                            msg1: null
-                        };
-                    }
-                });
-                app.mount('#app');
-            </script>
-        </body>
-        ```
-        - 运行后输入对上下文本框分别数字回车后可以看到使用了 `.number` 修饰符的绑定的属性内容为number类型而没有使用的为string类型
-        - 说明：
-          1. 功能描述：
-             - 该实例展示了 Vue 中 `v-model` 指令的 `.number` 修饰符的使用。
-             - 当用户在输入框中输入数字时，`.number` 修饰符会自动将输入的字符串转换为数字类型。
-          2. 代码逻辑：
-             - 数据绑定：
-               - `v-model.lazy` 将输入框的值与 `msg` 和 `msg1` 数据进行双向绑定。
-               - `v-model.lazy.number` 将输入框的值与 `msg1` 数据进行双向绑定，并将其转换为数字类型。
-             - 方法：
-               - 当用户输入内容并按下回车键时，`msg` 和 `msg1` 的值会自动更新到页面。
-          3. 关键点:
-             - `.lazy` 修饰符：实现了延迟更新的功能。
-             - `.number` 修饰符：实现了将输入内容转换为数字类型的功能。
-             - 响应式更新：当输入框内容变化时，`msg` 和 `msg1` 会自动更新到页面。
-- 从实例41中就可以看出 `.number` 修饰符的内容为将 `v-model` 指令绑定的内容属性改为数值型
-### .trim修饰符
-- 如果要自动过滤用户输入内容首尾的空白字符，那么可以使用 `v-model` 指令的 `.trim` 修饰符
-- 实例42:
-  - ```html
+      - 代码运行后可以看到文本框和标题的内容为hello world 点击按钮后控制台输出按钮被点击了
+      - 说明：
+        1. 功能描述：
+            - 该实例展示了 Vue3 中全局注册组件的基本用法。
+            - 全局注册的组件可以在任何地方使用，并且可以通过 `app.mount` 方法挂载应用实例。
+        2. 代码逻辑：
+            - 数据绑定：
+            - `msg` 是一个响应式数据，绑定到文本框和标题上。
+            - `title` 和 `desc` 是静态数据，显示在页面上。
+            - 方法：
+            - `btnClick` 方法用于处理按钮点击事件，并在控制台输出信息。
+        3. 关键点:
+            - 响应式数据：使用 Vue3 的响应式数据绑定功能。
+            - 事件处理：使用 Vue3 的事件处理功能。
+            - 挂载应用实例：使用 `app.mount` 方法挂载应用实例。
+#### 全局注册组件
+- Vue3.js允许全局注册组件，全局注册的组件可以在任何地方使用。全局注册组件的方法如下
+  1.  使用 `createApp` 方法创建Vue3.js应用实例
+  2. 使用 `app.component` 方法注册组件
+  3. 在Vue3.js应用实例中使用 `app.mount` 方法挂载应用实例
+- 实例44:
+    - ```html
         <body>
             <div id = 'app'></div>
             <template id = 'my-app'>
-                <input type = 'text' v-model.trim = 'msg'>
-                <h2>{{msg}}
+                <div class = 'comps-b'>
+                    <input type = 'text' v-model='msg'>
+                    <h4>{{msg}}</h4>
+                </div>
+                <compontent-a></compontent-a>
+                <div class = 'comp-a'></div>
+            </template>
+            <template id = 'compontent-a'>
+                <div class = 'comps-a'>
+                    <h4>{{title}}</h4>
+                    <p>{{desc}}</p>
+                    <button @click = 'btnClick'>按钮</button>
+                </div>
             </template>
             <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
             <script>
-                const app = Vue.createApp({
-                    template: '#my-app',
-                    data() {
-                        return {
-                            msg: null,
+                const App = {
+                    template:'#my-app',
+                    data(){
+                        return{
+                            msg:'hello world'
                         }
                     }
-                }).mount('#app');
+                };
+                const app = Vue.createApp(App);
+                app.component('compontent-a',{
+                    template:'#compontent-a',
+                    data(){
+                        return{
+                            title:'标题',
+                            desc:'显示区域'
+                            }
+                    },
+                    methods:{
+                        btnClick(){
+                            console.log('按钮被点击了')
+                        }
+                    }
+                
+                });
+                app.mount('#app')
             </script>
         </body>
         ```
-        - 代码运行后输入文本框内容前后加上空格，回车后可以看到标题的内容没有空格
-        - 说明：
+      - 代码运行后可以看到文本框和标题的内容为hello world 点击按钮后控制台输出按钮被点击了
+      - 说明：
           1. 功能描述：
-             - 该实例展示了 Vue 中 `v-model` 指令的 `.trim` 修饰符的使用。
-             - 当用户在输入框中输入内容时，`.trim` 修饰符会自动去除首尾的空格。
+              - 该实例展示了 Vue3 中全局注册组件的基本用法。
+              - 全局注册的组件可以在任何地方使用，并且可以通过 `app.mount` 方法挂载应用实例。
           2. 代码逻辑：
-             - 数据绑定：
-               - `v-model.trim` 将输入框的值与 `msg` 数据进行双向绑定，并去除首尾空格。
-             - 方法：
-               - 当用户输入内容并按下回车键时，`msg` 的值会自动更新到页面，并去除首尾空格。
+              - 数据绑定：
+                  - `msg` 是一个响应式数据，绑定到文本框和标题上。
+                  - `title` 和 `desc` 是静态数据，显示在页面上。
+              - 方法：
+                  - `btnClick` 方法用于处理按钮点击事件，并在控制台输出信息。
           3. 关键点:
-             - `.trim` 修饰符：实现了去除输入内容首尾空格的功能。
-             - 响应式更新：当输入框内容变化时，`msg` 会自动更新到页面，并去除首尾空格。
-## Vue3.js组件化开发
+              - 响应式数据：使用 Vue3 的响应式数据绑定功能。
+              - 事件处理：使用 Vue3 的事件处理功能。
+              - 挂载应用实例：使用 `app.mount` 方法挂载应用实例。
+              - 全局注册组件：使用 `app.component` 方法全局注册组件。
+        
+
+
+            
+
+#### 局部组件
+- 局部组件是指在某个组件内部注册的组件，局部组件只能在该组件内部使用。局部组件的注册方法如下
+  1. 在组件的 `components` 选项中注册局部组件
+  2. 在模板中使用局部组件
+- 实例45:
+    - ```html
+            <body>
+                <div id = 'app'></div>
+                <template id = 'my-app'>
+                    <h2>局部组件</h2>
+                    <comps-a></comps-a>
+                    <comps-b></comps-b>
+                </template>
+                <template id = 'comps-a'>
+                    <div class="comps-a">
+                        <h4>{{title}}</h4>
+                        <p>{{desc}}</p>
+                        <button @click = 'btnClick'>按钮</button>
+                    </div>
+                </template>
+                <template id = 'comps-b'>
+                    <div class="comps-b">
+                        <input type="text" v-model = 'msg'>
+                        <h4>{{msg}}</h4>
+                    </div>
+                </template>
+                <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+                <script>
+                    const App = {
+                        template:'#my-app',
+                        data(){
+                            return{
+                                msg:'hello world'
+                            }
+                        },
+                        components:{
+                            'comps-a':{
+                                template:'#comps-a',
+                                data(){
+                                    return{
+                                        title:'标题',
+                                        desc:'显示区域'
+                                    }
+                                },
+                                methods:{
+                                    btnClick(){
+                                        console.log('按钮被点击了')
+                                    }
+                                }
+                            },
+                            'comps-b':{
+                                template:'#comps-b',
+                                data(){
+                                    return{
+                                        msg:'hello world'
+                                    }
+                                }
+                            }
+                        }
+                    };
+                    const app = Vue.createApp(App).mount('#app');
+                </script>
+            </body> 
+        ```
+      - 代码运行后可以看到文本框和标题的内容为hello world 点击按钮后控制台输出按钮被点击了
+      - 说明：
+          1. 功能描述：
+              - 该实例展示了 Vue3 中局部组件的基本用法。
+              - 局部组件只能在该组件内部使用，并且可以通过 `components` 选项注册局部组件。
+          2. 代码逻辑：
+              - 数据绑定：
+                  - `msg` 是一个响应式数据，绑定到文本框和标题上。
+                  - `title` 和 `desc` 是静态数据，显示在页面上。
+              - 方法：
+                  - `btnClick` 方法用于处理按钮点击事件，并在控制台输出信息。
+          3. 关键点:
+              - 响应式数据：使用 Vue3 的响应式数据绑定功能。
+              - 事件处理：使用 Vue3 的事件处理功能。
+              - 挂载应用实例：使用 `app.mount` 方法挂载应用实例。
+              - 局部注册组件：在 `components` 选项中注册局部组件。 
 ## 前端工程化
