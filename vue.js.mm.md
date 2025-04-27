@@ -2442,11 +2442,227 @@
 #### 项目运行和打包
 - 对于运行和打包， `Vue CLI` 脚手架已经在 package.json 文件中提供了相应的命令，代码如下
   - ```json
-    {
-      "scripts": {
-        "serve": "vue-cli-service serve",  # 1.开发环境，启动项目脚本
-        "build": "vue-cli-service build",  # 2.生产环境，打包项目脚本
-        "lint": "vue-cli-service lint"     # 3.代码检查脚本
-      }
-    }
+        {
+        "scripts": {
+            "serve": "vue-cli-service serve",  # 1.开发环境，启动项目脚本
+            "build": "vue-cli-service build",  # 2.生产环境，打包项目脚本
+            "lint": "vue-cli-service lint"     # 3.代码检查脚本
+            }
+        }
+        ```
+    - 说明：
+        1. `serve` :运行项目的脚本。当终端执行 `npm run serve` 时，便会执行 `vue-cli-service serve` 启动一个本地服务在浏览器中运行代码
+        2. `build` :打包项目的脚本。当终端执行 `npm run build` 时，便会执行 `vue-cli-service build` 将项目打包成生产环境的代码
+- 运行Vue3项目
+  - 在项目目录下打开终端，输入以下命令启动开发服务器
+    ```bash
+    npm run serve
+    ```
+  - 如果浏览器自动打开了 `http://localhost:8080`，则表示项目运行成功。
+  - 如果没有自动打开，可以手动在浏览器中输入 `http://localhost:8080` 访问项目。
+- 打包Vue3项目
+  - 在项目目录下打开终端，输入以下命令打包项目
+    ```bash
+    npm run build
+    ```
+  - 打包完成后，会在项目目录下生成一个 `dist` 文件夹，里面包含了打包后的文件，可以将其部署到生产环境中。
+  - `dist` 文件夹的结构如下
+    ```
+    dist
+      ├─css
+      │   └─app.12345678.css
+      ├─js
+      │   ├─app.12345678.js
+      │   └─chunk-vendors.12345678.js
+      ├─index.html
+      └─favicon.ico
+    ```
+- 目录结构说明
+  - `css`：存放打包后的 CSS 文件。
+  - `js`：存放打包后的 JavaScript 文件。
+  - `index.html`：打包后的 HTML 文件，是应用的入口文件。
+  - `favicon.ico`：网站图标文件。
+- 说明：
+  - `dist` 文件夹是打包后的文件，可以将其部署到生产环境中。
+  - 打包后的文件可以直接在浏览器中打开，也可以部署到服务器上进行访问。
+
+#### vue.config.js配置文件
+- `vue.config.js` 是 Vue CLI 项目的配置文件，可以用于配置项目的各种选项，如开发服务器、打包选项、插件等。`vue.config.js` 的基本结构如下
+  ```javascript
+  module.exports = {
+      // 配置选项
+  }
   ```
+- `vue.config.js` 的常用配置
+  1. `outputDir` :  `outputDir` 用于指定打包后的文件输出目录，默认值为 `dist`。可以根据项目需求修改输出目录，如下所示
+        ```javascript
+        module.exports = {
+            outputDir: 'dist' // 指定打包后的文件输出目录
+        }
+        ```
+    - 注意 对于使用 `Vue CLI 5.x` 创建项目，vue.config.js 同样支持使用 `defineConfig` 函数来定义配置选项，如下所示
+      ```javascript
+            const { defineConfig } = require('@vue/cli-service')
+            module.exports = defineConfig({
+                // transpileDependencies: true,  //如果选中ture,那么项目引用node_modules中的包也会用babel编译
+                outputDir: 'dist' // 指定打包后的文件输出目录
+            })
+        ```
+  2. `publicPath` : `publicPath` 用于指定应用的公共路径，默认值为 `/`。可以根据项目需求修改公共路径，如下所示
+        ```javascript
+            module.exports = {
+                publicPath: '/' // 指定应用的公共路径
+            }
+        ```
+        - 默认情况下，`publicPath` 为 `/`，表示应用的根路径。
+        - 如果应用部署在子路径下，可以修改 `publicPath` 为子路径，如 `/my-app/`。
+  3. `devServer` : `devServer` 用于配置开发服务器的选项，如端口号、代理等，如下所示
+     ```javascript
+     module.exports = {
+         devServer: {
+             port: 8080, // 指定开发服务器的端口号
+             proxy: { // 配置代理
+                 '/api': {
+                     target: 'http://localhost:3000', // 代理目标地址
+                     changeOrigin: true, // 是否改变请求源
+                     pathRewrite: { // 重写路径
+                         '^/api': ''
+                     }
+                 }
+             }
+         }
+     }
+     ```
+  4. `lintOnSave` : `lintOnSave` 用于配置是否在保存时进行代码检查，默认值为 `true`。可以根据项目需求修改，如下所示
+        ```javascript
+            module.exports = {
+                lintOnSave: false // 是否在保存时进行代码检查
+            }
+            ```
+  5. `configureWebpack` : `configureWebpack` 用于配置 webpack 的选项，如下所示
+     ```javascript
+     module.exports = {
+         configureWebpack: {
+             // webpack 配置选项
+         }
+     }
+     ```
+  6. `assetDir` : `assetDir` 用于指定静态资源的目录，默认值为 `assets`。可以根据项目需求修改，如下所示
+     ```javascript
+     module.exports = {
+         assetsDir: 'static' // 指定静态资源的目录
+     }
+     ```
+     - `assesDir: static` 表示将静态资源放在 `static` 目录下。
+     - `assetsDir` 主要用于组织静态资源文件，如图片、字体等，可以根据项目需求修改。
+  7. `alias` : `alias` 用于配置路径别名，可以简化模块导入的路径，如下所示
+     ```javascript
+     module.exports = {
+         configureWebpack: {
+             resolve: {
+                 alias: {
+                     '@': path.resolve(__dirname, 'src'), // 将 @ 映射到 src 目录
+                     'assets': path.resolve(__dirname, 'src/assets') // 将 assets 映射到 src/assets 目录
+                 }
+             }
+         }
+     }
+     ```
+     - `alias` 主要用于简化模块导入的路径，如 `@/components/MyComponent.vue` 可以简化为 `@/MyComponent.vue`。
+     - `alias` 还可以用于解决路径冲突的问题，如多个模块使用相同的名称，可以通过别名来区分它们。
+     - 注意 `alias` 时 `webpack` 的配置项，使用时需要引入 `path` 模块，如下所示
+       ```javascript
+       const path = require('path')
+       ```
+       - `path` 模块是 Node.js 内置模块，用于处理文件和目录的路径。
+         - `path.resolve(__dirname, 'src')` 表示将当前目录（`__dirname`）和 `src` 目录拼接成一个绝对路径。
+### 认识Vite
+- `Vite` 是一个新一代的前端构建工具，具有快速、轻量、灵活等特点。它使用原生 ES 模块（ESM）来实现快速的热更新和构建速度。`Vite` 的主要特点包括
+  1. **快速启动**：使用原生 ES 模块（ESM）来实现快速的热更新和构建速度。
+  2. **按需加载**：支持按需加载（Code Splitting），可以将代码拆分成多个 bundle 文件，按需加载，提高性能。
+  3. **插件机制**：提供丰富的插件机制，可以通过插件扩展 `Vite` 的功能，如代码压缩、文件复制等。
+  4. **支持多种资源**：支持处理 JavaScript、CSS、图片、字体等多种资源，可以将它们打包成一个或多个 bundle 文件。
+  5. **支持多种语言**：支持多种语言，如 JavaScript、TypeScript、Sass、Less 等，可以根据项目需求选择不同的语言。
+- 在Vue3中，`Vite` 是官方推荐的构建工具，使用 `Vite` 创建 Vue.js 项目的步骤如下
+  1. 打开命令行终端，输入以下命令安装 `Vite`
+     ```bash
+     npm install -g create-vite
+     ```
+  2. 创建新的 Vue.js 项目
+     ```bash
+     create-vite my-project --template vue
+     ```
+  3. 进入项目目录，输入以下命令安装依赖项
+     ```bash
+     cd my-project
+     npm install
+     ```
+  4. 启动开发服务器
+     ```bash
+     npm run dev
+     ```
+  - 如果浏览器自动打开了 `http://localhost:5173`，则表示项目创建成功。 
+### webpack和Vite的区别
+- `webpack` 和 `Vite` 是两种不同的前端构建工具，它们在设计理念、构建方式和使用体验上有一些区别。以下是它们的主要区别
+  1. **设计理念**：
+     - `webpack` 是一个模块打包器，主要用于将应用程序中的所有模块打包成一个或多个 bundle 文件。
+     - `Vite` 是一个新一代的前端构建工具，主要用于快速启动和热更新。
+  2. **构建方式**：
+     - `webpack` 在开发模式下会将所有模块打包成一个 bundle 文件，然后在浏览器中加载。
+     - `Vite` 在开发模式下使用原生 ES 模块（ESM）来实现快速的热更新和构建速度。
+  3. **热更新**：
+     - `webpack` 的热更新需要重新打包整个应用程序，速度较慢。
+     - `Vite` 的热更新使用原生 ES 模块（ESM），可以实现快速的热更新，速度较快。
+  4. **配置复杂度**：
+     - `webpack` 的配置相对较复杂，需要编写大量的配置文件。
+     - `Vite` 的配置相对简单，默认配置已经足够满足大部分需求。
+  5. **生态系统**：
+     - `webpack` 有着丰富的插件生态系统，可以通过插件扩展功能。
+     - `Vite` 的插件生态系统相对较新，但也在快速发展中。
+  6. **支持的语言**：
+     - `webpack` 支持多种语言，如 JavaScript、TypeScript、Sass、Less 等。
+     - `Vite` 也支持多种语言，但主要针对现代 JavaScript 和 TypeScript。
+## Vue3组件化基础
+1. 新建项目
+    - 使用 `Vue CLI` 创建 Vue.js 项目，命令如下
+      ```bash
+      vue create my-project
+      ```
+    - 选择默认配置或手动配置，根据项目需求选择不同的选项。
+2. 进入项目目录
+    - 使用 `cd` 命令进入项目目录，命令如下
+      ```bash
+      cd my-project
+      ```
+3. 删除项目中暂时没有用的文件
+    - 删除 `src` 目录下的 `assets` 和 `components` 目录，然后修改 `App.vue` 文件，代码如下
+      - ```html
+        <template>
+            <div id="app">
+                hello world
+            </div>
+        </template>
+        <script>
+            export default {
+                name: 'App',
+                components:{}
+            }
+        </script>
+        <style
+        #app {
+            font-family: Avenir, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: center;
+            color: #2c3e50;
+            margin-top: 60px;
+            }
+        </style>
+      ```
+4. 运行项目
+    - 使用 `npm run serve` 命令启动开发服务器，命令如下
+      ```bash
+      npm run serve
+      ```
+    - 如果浏览器自动打开了 `http://localhost:8080`，则表示项目运行成功。
+    - 如果没有自动打开，可以手动在浏览器中输入 `http://localhost:8080` 访问项目。
