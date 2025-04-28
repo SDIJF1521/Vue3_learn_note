@@ -2739,10 +2739,6 @@
         A -->D[Footer]
         C -->E[MainBanner]
         C -->F[MMainPorductList]
-<<<<<<< HEAD
-=======
-        ```
->>>>>>> 3a07cd40b9fc984d827dacc90b15a0a8e9e4a80c
 - 实例47：
   - 目录树
     - ```
