@@ -2441,18 +2441,18 @@
   - `vite.config.js`：Vite 的配置文件。
 #### 项目运行和打包
 - 对于运行和打包， `Vue CLI` 脚手架已经在 package.json 文件中提供了相应的命令，代码如下
-  - ```json
-        {
-        "scripts": {
-            "serve": "vue-cli-service serve",  # 1.开发环境，启动项目脚本
-            "build": "vue-cli-service build",  # 2.生产环境，打包项目脚本
-            "lint": "vue-cli-service lint"     # 3.代码检查脚本
+    - ```json
+            {
+            "scripts": {
+                "serve": "vue-cli-service serve",  # 1.开发环境，启动项目脚本
+                "build": "vue-cli-service build",  # 2.生产环境，打包项目脚本
+                "lint": "vue-cli-service lint"     # 3.代码检查脚本
+                }
             }
-        }
         ```
-    - 说明：
-        1. `serve` :运行项目的脚本。当终端执行 `npm run serve` 时，便会执行 `vue-cli-service serve` 启动一个本地服务在浏览器中运行代码
-        2. `build` :打包项目的脚本。当终端执行 `npm run build` 时，便会执行 `vue-cli-service build` 将项目打包成生产环境的代码
+      - 说明：
+          1. `serve` :运行项目的脚本。当终端执行 `npm run serve` 时，便会执行 `vue-cli-service serve` 启动一个本地服务在浏览器中运行代码
+          2. `build` :打包项目的脚本。当终端执行 `npm run build` 时，便会执行 `vue-cli-service build` 将项目打包成生产环境的代码
 - 运行Vue3项目
   - 在项目目录下打开终端，输入以下命令启动开发服务器
     ```bash
@@ -2739,7 +2739,6 @@
         A -->D[Footer]
         C -->E[MainBanner]
         C -->F[MMainPorductList]
-        ```
 - 实例47：
   - 目录树
     - ```
