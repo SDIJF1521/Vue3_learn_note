@@ -2666,3 +2666,207 @@
       ```
     - 如果浏览器自动打开了 `http://localhost:8080`，则表示项目运行成功。
     - 如果没有自动打开，可以手动在浏览器中输入 `http://localhost:8080` 访问项目。
+### 组件的嵌套
+- 组件的嵌套是指在一个组件中使用另一个组件。组件的嵌套可以实现更复杂的 UI 结构和功能。组件的嵌套可以分为以下两种方式
+  1. **全局注册组件**：在 `main.js` 文件中全局注册组件，可以在任何地方使用。
+  2. **局部注册组件**：在某个组件内部注册组件，只能在该组件内部使用。
+- 实例46(App.vue)：
+    - ```html
+           <template>
+                <div class='header'>
+                    <h4>头部</h4>
+                    <h4>标题</h4>
+                </div>
+                <div class='main'>
+                    <h4>轮播图内容</h4>
+                    <ul>
+                        <li>商品信息1</li>
+                        <li>商品信息2</li>
+                        <li>商品信息3</li>
+                        <li>商品信息4</li>
+                        <li>商品信息5</li>
+                    </ul>
+                </div>
+                <div class='footer'>
+                    <h4>底部</h4>
+                </div>
+            </template>
+            <script>
+                export default {
+                    name: 'App' // 组件名称
+                }
+
+            </script>
+            <style>
+                .header, .main, .footer{
+                    border: 1px solid #999;
+                    margin-bottom: 4px
+                }
+            </style>
+        ```
+      - 说明：
+          1. 功能描述：
+              - 该实例展示了 Vue3 中组件的嵌套用法。
+              - 在 `App.vue` 文件中定义了一个根组件，包含头部、主体和底部三个部分。
+          2. 代码逻辑：
+              - 使用 `<template>` 标签定义组件的模板结构。
+              - 使用 `<script>` 标签定义组件的逻辑代码。
+              - 使用 `<style>` 标签定义组件的样式。
+          3. 关键点:
+              - 组件名称：使用 `name` 属性定义组件的名称。
+              - 样式：使用 CSS 定义组件的样式。
+      - 效果：
+        - ![实例46效果图](./图片/屏幕截图%202025-04-28%20193518.png)
+    - 在 `main.js` 中导入根组件,然后调用 `createApp` 方法创建 Vue 实例，最后调用 `mount` 方法挂载根组件到 DOM 上，代码如下
+        ```javascript
+            import { createApp } from 'vue'
+            import App from './App.vue'
+            import './index.css'  // 引入全局样式文件
+            createApp(App).mount('#app')
+        ```
+    - 实例26的代码将所有的逻辑都放到了根组件中，虽然可以实现功能，但是并不是最优的写法，具体原因如下：
+      1. 将一个应用的所有逻辑都放在一个组件中，会让这个组件变得非常臃肿和复杂，变得难以维护
+      2. 组件化开发的思想是将一个应用拆分成多个小的组件，每个组件负责一个特定的功能，这样可以提高代码的复用性和可维护性 
+#### 组件的拆分和嵌套
+- 为了让应用开发的更加方便，代码复用率更高，并利于后期维护，我们需要将一个组件拆分成多个小的组件，每个组件负责一个特定的功能。组件的拆分和嵌套可以实现更复杂的 UI 结构和功能。组件的拆分和嵌套可以分为以下两种方式
+  1. **全局注册组件**：在 `main.js` 文件中全局注册组件，可以在任何地方使用。
+  2. **局部注册组件**：在某个组件内部注册组件，只能在该组件内部使用。
+- 组件拆分图
+  - ```mermaid
+     flowchart TD
+        A[App] -->B[Header]
+        A -->C[Main]
+        A -->D[Footer]
+        C -->E[MainBanner]
+        C -->F[MMainPorductList]
+        ```
+- 实例47：
+  - 目录树
+    - ```
+        └─src
+        │   ├─ 实例47组件
+        │   │   ├─App.vue
+        │   │   │
+        │   │   ├─Footer.vue
+        │   │   │
+        │   │   ├─Header.vue
+        │   │   │
+        │   │   ├─Main.vue
+        │   │   │
+        │   │   ├─MainBanner.vue
+        │   │   │
+        │   │   └─MainPorductList.vue
+        │   ├─App.vue
+        │   │  
+        │   └─main.js
+        ```
+    - Header.vue代码
+        - ```html
+            <template>
+                <div class='header'>
+                    <h4>头部</h4>
+                    <h4>标题</h4>
+                </div>
+            </template>
+            <script>
+                export default {}
+            </script>
+            ```
+    - Main.vue代码
+      - ```html
+            <template>
+                <div class = 'main'>
+                    <main-banner></main-banner>
+                    <main-product></main-product>
+                </div>
+            </template>
+            <script>
+                // 1. 引入子组件
+                import MainBanner from './MainBanner.vue'
+                import MainProduct from './MainPorductList.vue'
+                // 2. 注册子组件
+                export default {
+                    components: {
+                        MainBanner,
+                        MainProduct
+                    }
+                }
+            </script>
+        ``` 
+    - MainBanner.vue代码
+      - ```html
+            <template>
+                <div class='main-banner'>
+                    <h4>轮播图内容</h4>
+                </div>
+            </template>
+            <script>
+                export default {}
+            </script>
+        ```
+    - MainPorductList.vue代码
+      - ```html
+            <template>
+                <div class='main-product'>
+                    <ul>
+                        <li>商品信息1</li>
+                        <li>商品信息2</li>
+                        <li>商品信息3</li>
+                        <li>商品信息4</li>
+                        <li>商品信息5</li>
+                    </ul>
+                </div>
+            </template>
+            <script>
+                export default {}
+            </script>
+        ```
+    - Footer.vue代码
+      - ```html
+            <template>
+                <div class='footer'>
+                    <h4>底部</h4>
+                </div>
+            </template>
+            <script>
+                export default {}
+            </script>
+        ```
+    - App.vue代码
+      - ```html
+            <template>
+                <div id = 'app'>
+                    <Header></Header>
+                    <Main></Main>
+                    <Footer></Footer>
+                </div>
+            </template>
+            <script>
+                import Header from './Header.vue'
+                import Footer from './Footer.vue'
+                import Main from './Main.vue'
+                export default {
+                    components: {
+                        Header,
+                        Footer,
+                        Main
+                    }
+                }
+            </script>
+            <style>
+                .header, .main, .footer{
+                    border: 1px solid #999;
+                    margin-bottom: 4px
+                }
+            </style>
+        ```
+    - main.js代码
+        - ```javascript
+                import { createApp } from 'vue'
+                import App from './实例47/App.vue'
+                // 引入全局样式文件
+                import './index.css'  
+                createApp(App).mount('#app')
+            ```
+    - 运行后的效果同实例46
+#### 组件css的作用域
