@@ -3067,4 +3067,23 @@ h4 {
                         ```
                 - 效果图
                   - ![效果图](./图片/屏幕截图%202025-05-02%20035010.png)
+                - 运行后可以看到，`App.vue` 中的 `h4` 标签添加了下划线，`Hello_vue.vue` 中的 `h4` 标签添加了下划线和绿色字体。这个就是深度选择器的作用。
+                - 注意:
+                  - 使用 `deep()` 选择器时，要修改的样式元素必须要在子组件中根节点的 `div` 中使用多多个根元素是无效的如
+                    - ```html
+                        <template>
+                            <h4>hello vue</h4>
+                            <h4 class="hello">hello world</h4>
+                        </template>
+                        <script>
+                        export default {
+                        }
+                        </script>
+                        <style scoped>
+                        h4 {
+                            color:red
+                        }
+                        </style>
+                        ```
+##### CSS Modules
                 
