@@ -2242,7 +2242,22 @@
                                 },
                                 methods:{
                                     btnClick(){
-                                        console.log('按钮被点击了')
+                                        console.log('按钮被点击了')<template>
+    <h4>hello vue</h4>
+    <h4 class="hello">hello world</h4>
+</template>
+<script>
+export default {
+    mounted() {
+        console.log('Hello_Vue.vue 组件已挂载')
+    }
+}
+</script>
+<style scoped>
+h4 {
+    color: red;
+}
+</style>    
                                     }
                                 }
                             },
@@ -2868,4 +2883,188 @@
                 createApp(App).mount('#app')
             ```
     - 运行后的效果同实例46
-#### 组件css的作用域
+---
+- 组件之间的通信
+  - 组件之间的通信是指不同组件之间如何传递数据和事件。组件之间的通信可以分为以下几种方式
+    1. **父子组件通信**：父组件通过 `props` 向子组件传递数据，子组件通过 `$emit` 向父组件发送事件。
+    2. **兄弟组件通信**：兄弟组件通过父组件进行通信，父组件将数据传递给兄弟组件。
+    3. **跨级组件通信**：跨级组件通过 `provide/inject` 或 `eventBus` 进行通信。
+    4. **全局状态管理**：使用 Vuex 或 Pinia 等状态管理库进行全局状态管理，实现跨组件通信。
+
+#### 组件样式的特性
+- vue3中有三种方式可以用于编写单文件组件样式，分别是
+    - `<style scoped>`：局部样式，只作用于当前组件。
+    - `<style module>`：模块化样式，使用 CSS Modules 进行样式的局部作用域。
+    - `v-bind:class`：动态绑定类名，根据条件动态添加类名。
+##### Scoped CSS
+- `<scoped CSS>` 是 Vue3中的一个样式作用域标记，表示在该标签中编写的样式都是局部样式，只作用于当前组件；通常将其称为局部组件样式
+1. 组件的局部样式
+   - 局部样式是指只作用于当前组件的样式，不会影响其他组件的样式。局部样式可以通过在 `<style>` 标签中添加 `scoped` 属性来实现，如下所示
+     ```html
+        <template>
+            <div calss = "example">hello vue</div>
+        </template>
+        <style scoped>
+            .example {
+                color: red;
+            }
+        </style>
+        ```
+        - 提示 `style` 标签上带有 `scoped` 属性为局部样式，没有的为全局样式
+    - 上面的组件的样式会被工具 `PostCSS` 转换成下面的样式
+        ```html
+           <template>
+                <div class = "example" data-v-12345678>hello vue</div>
+            </template>
+            <style scoped>
+                .example[data-v-12345678] {
+                    color: red;
+                }
+            </style>
+            ```
+        - 说明：
+            - `data-v-12345678` 是一个随机生成的属性，用于标识当前组件的样式。
+            - `example[data-v-12345678]` 表示只作用于当前组件的样式，不会影响其他组件的样式。
+        - 这样做的好处是可以避免样式冲突的问题，提高代码的可维护性。
+
+2. 局部样式的泄漏
+   - 通常情况下，当组件带有 `scoped` 时, 父组件的样式不会泄漏的子组件中，但是子组件的根节点会同时受到父组件的作用样式和子组件的作用样式的影响
+   - 实例48：
+       - 目录树
+         - ```
+             └─src
+             │   ├─ 实例48组件
+             │   │   ├─App.vue
+             │   │   │
+             │   │   └─Hello_Vue.vue
+             │   │
+             │   └─main.js
+             ```
+       - App.vue代码
+         - ```html
+               <template>
+                   <h4>App Titile</h4>
+                   <hello-vue></hello-vue>
+               </template>
+               <script>
+                   import HelloVue from './Hello_vue.vue'
+                   export default {
+                       components: {
+                           HelloVue
+                       }
+                   }
+               </script>
+               <style scoped>
+                   h4 {
+                       text-decoration: underline;
+                   }
+               </style>
+               ```
+       - Hello_Vue.vue代码
+           - ```html
+                   <template>
+                       <h4>hello vue</h4>
+                   </template>
+                   <script>
+                       export default {}
+                   </script>
+                   <style scoped>
+                       h4 {
+                           color: red;
+                       }
+                   </style>
+               ```
+       - main.js代码
+           - ```javascript
+                   import { createApp } from 'vue'
+                   import App from './实例48/App.vue'
+                   // 引入全局样式文件
+                   import './index.css'  
+                   createApp(App).mount('#app')
+               ```
+       - 效果图
+         - ![效果图](./图片/image.png)
+       - 运行后可以看到，`App.vue` 和 `Hello_vue.vue` 组件中的 `style` 标签都带有 `scoped` 属性，但是子组件的根节点的 `<h4>` 元素同时会会被父组件的作用域样式和子组件作用域样式影响，所以父组件和子组件的 `<h4>` 标签元素字体都添加上了下划线，这个就是局部样式泄漏的问题。
+   - 在开发过程中可以采取以下措施来避免局部样式泄漏的问题
+       1. 尽量减少标签选择器的使用，多使用类选择器(class)
+       2. 在每一个子组件根元素添加唯一的类选择器
+       3. 在子组件中使用多个根节点，也可以在 `template` 中添加多个根元素如
+          - ```html
+                <!--将根元素更替为div，并添加上一个class属性-->
+                <template>
+                    <div calss = 'hello-vue'>
+                        <h4>hello vue</h4>
+                    </div>
+                <template>
+                <!--多个根元素-->
+                <template>
+                    <h4>hello vue</h4>
+                    <h4>hello vue</h4>
+                </template>
+            ``` 
+3. 深度选择器
+   - 通过上面的案例可以看到，局部样式会泄漏到子组件中，同时也知道了如何避免，但是有些时候我们会需要通过父组件来修改子组件的样式，这个时候可以使用深度选择器 `deep()` 来实现 
+       - 实例49 
+            - 目录树
+                - ```
+                    └─src
+                    │   ├─ 实例48组件
+                    │   │   ├─App.vue
+                    │   │   │
+                    │   │   └─Hello_Vue.vue
+                    │   │
+                    │   └─main.js
+                    ``` 
+                - App.vue代码
+                    - ```html
+                        <template>
+                            <h4>App Title</h4>
+                            <hello-vue></hello-vue>
+                        </template>
+                        <script>
+                        import HelloVue from './Hello_Vue.vue'
+                        export default {
+                            components: {
+                                HelloVue
+                            }
+                        }
+                        </script>
+                        <style scoped>
+                        h4 {
+                            text-decoration: underline;
+                        }
+                        :deep(.hello) {
+                        color: rgb(16, 213, 52) !important; /* 需要 !important 覆盖子组件 scoped 样式 */
+                        text-decoration: underline;
+                        }
+                        </style>
+                        ```
+                - Hello_Vue.vue代码
+                    - ```html
+                        <template>
+                        <div>
+                            <h4>hello vue</h4>
+                            <h4 class="hello">hello world</h4>
+                        </div>
+                        </template>
+                        <script>
+                        export default {
+                        }
+                        </script>
+                        <style scoped>
+                        h4 {
+                            color:red
+                        }
+                        </style>
+                        ```
+                - main.js代码
+                    - ```javascript
+                            import { createApp } from 'vue'
+                            import App from './实例49/App.vue'
+                            // 引入全局样式文件
+                            import './index.css'  
+                            createApp(App).mount('#app')
+                        ```
+                - 效果图
+                  - ![效果图](./图片/屏幕截图%202025-05-02%20035010.png)
+                
