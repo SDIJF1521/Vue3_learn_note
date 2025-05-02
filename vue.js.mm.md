@@ -520,6 +520,29 @@
                 </body>
             ```
           - 运行后可以看到return返回的对象内容被渲染为标签的属性了
+- 注意
+    - 在vue3.2之前的版本 `v-bind` 语法是一个实验性功能需在项目的 vue.config.js 或构建配置中启用该功能
+        ```js
+        // vue.config.js
+        module.exports = {
+        chainWebpack: config => {
+            config.module
+            .rule('vue')
+            .use('vue-loader')
+            .tap(options => {
+                options.compilerOptions = {
+                ...options.compilerOptions,
+                cssVars: {
+                    // 启用实验性 CSS v-bind
+                    inject: true
+                }
+                }
+                return options
+            })
+        }
+        }
+        ···
+    - 但在3.2版本之后已经正式发布了，所以在3.2版本之后的版本中可以直接使用 `v-bind` 语法来动态绑定类名和样式
 #### v-on指令
 - v-on指令用于实现对事件的监听
 - 绑定事件
@@ -3042,7 +3065,7 @@ h4 {
                 - Hello_Vue.vue代码
                     - ```html
                         <template>
-                        <div>
+                        <div> <!-- 新增外层容器 -->
                             <h4>hello vue</h4>
                             <h4 class="hello">hello world</h4>
                         </div>
@@ -3051,11 +3074,6 @@ h4 {
                         export default {
                         }
                         </script>
-                        <style scoped>
-                        h4 {
-                            color:red
-                        }
-                        </style>
                         ```
                 - main.js代码
                     - ```javascript
@@ -3069,7 +3087,7 @@ h4 {
                   - ![效果图](./图片/屏幕截图%202025-05-02%20035010.png)
                 - 运行后可以看到，`App.vue` 中的 `h4` 标签添加了下划线，`Hello_vue.vue` 中的 `h4` 标签添加了下划线和绿色字体。这个就是深度选择器的作用。
                 - 注意:
-                  - 使用 `deep()` 选择器时，要修改的样式元素必须要在子组件中根节点的 `div` 中使用多多个根元素是无效的如
+                  - 使用 `deep()` 选择器时，要修改的样式元素必须要在子组件中根节点的 `div` 中$\color{red}{使用多个根元素是无效的}$如
                     - ```html
                         <template>
                             <h4>hello vue</h4>
@@ -3086,4 +3104,90 @@ h4 {
                         </style>
                         ```
 ##### CSS Modules
-                
+- `CSS Modules` 是一种 CSS 模块化的写法，可以将 CSS 样式局部作用域化，避免样式冲突问题。`CSS Modules` 的基本语法如下
+    ```html
+        <template>
+            <p :class = '$style.example'>hello vue</p>
+        </template>
+        <style module>
+            .example {
+                color: red;
+            }
+        </style>
+        ```
+- 当组件的 `<style>` 标签上添加 `module` 属性时，表示该组件使用 `CSS Modules` 进行样式的局部作用域。`CSS Modules` 会将组件的样式转换成一个对象，然后通过 `$style` 属性访问该对象中的样式类名。这样可以避免样式冲突的问题，提高代码的可维护性。
+- CSS Modules 的方式在 Vue3 中并不常见，通常使用 `<style scoped>` 来实现局部样式。`CSS Modules` 主要用于大型项目中，或者需要与其他框架（如 React）进行样式共享的场景。$\color{green}{这里用作了解即可}$
+##### 在CSSZ中使用 v-bind
+- `v-bind` 是 Vue.js 中的一个指令，用于动态绑定 HTML 属性或组件的 prop。`v-bind` 可以用于动态绑定类名和样式。`v-bind` 具体用法可以查看上面的 `v-bind` 指令一节
+- 实例50:
+    - 目录树
+        - ```
+            └─src
+            │   ├─ 实例48组件
+            │   │   ├─App.vue
+            │   │   │
+            │   │   └─examole.vue
+            │   │
+            │   └─main.js
+            ``` 
+    - App.vue代码
+        - ```html
+            <template>
+                <example></example>
+            </template>
+
+            <script>
+                import Example from './example.vue'
+
+                export default {
+                components: {
+                    Example
+                }
+                }
+            </script>
+            ``` 
+    - examole.vue
+        - ```html
+            <template>
+                <div class = 'explame'>
+                    <h4 class = 'red'>Red</h4>
+                    <h4 class = 'green'>Grenn</h4>
+                    <h4 class = 'yellow'>yellow</h4>
+                </div>
+            </template>
+            <script>
+                export default {
+                    data(){
+                        return {
+                            color1:'red',
+                            color2:'green'
+                        }
+                    },
+                    computed:{
+                        color3(){
+                            return 'yellow'
+                        }
+                    }
+                }
+            </script>
+            <style>
+                .red {
+                    color: v-bind(color1);
+                }
+                .green{
+                    color: v-bind(color2);
+                }
+                .yellow{
+                    color: v-bind(color3);
+                }
+            </style>
+            ```
+    - main.js
+        - ```js
+            import { createApp } from 'vue'
+            import App from './实例50/App.vue'
+
+            createApp(App).mount('#app')
+            ```
+    - 效果图：
+      - ![效果图](./图片/屏幕截图%202025-05-02%20140328.png)
