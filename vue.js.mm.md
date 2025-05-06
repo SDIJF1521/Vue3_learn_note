@@ -3191,3 +3191,104 @@ h4 {
             ```
     - 效果图：
       - ![效果图](./图片/屏幕截图%202025-05-02%20140328.png)
+#### 父子组件的相互通信
+- 在开发过程中，我们经常会将一个页面拆分为多个组件，然后将这些组件通过组合或嵌套的方式构建网页，组件的嵌套有父组件和子组件组成,父子组件的通信图如下
+  - ```mermaid
+        flowchart LR
+        A[parent 父组件] -- Pass props -->B[child 子组件]
+        B -- $emit Event --> A
+    ```
+- 通过图可以看出，父组件将数据传递给子元素是通过 `props` 属性实现，而子组件将数据传递给符组件时通过 `$emit` 事件实现、
+##### 父组件传递数据给子组件
+- 通过 `props` 属性可以实现父子组件的通信
+- `props` 是什么
+  - `props` 是在组件上进行自定义的一种方式。当父组件为自定义属性赋值后，子组件可以通过属性名获取对应的值。
+- `props` 通常有一下两种用法
+  1. `props` 为字符串类型数组：数组中定义的字符串即为属性名称
+  2. `props` 为对象类型: 对象中可以指定属性名称、类型、是否必须，以及默认值等
+- 两种用法的实际使用
+  - 实例51(字符串类型数组)
+    - 目录树
+        - ```
+            └─src
+            │   ├─ 实例51组件
+            │   │   ├─App.vue
+            │   │   │
+            │   │   └─ShowMsg.vue
+            │   │
+            │   └─main.js 
+            ```
+    - App.vue文件
+        - ```html
+            <template>
+                <div class = 'app'>
+                    <show-msg title = '标题' content = '内容'></show-msg>
+                    <show-msg :title = 'title' :content='content'></show-msg>
+                    <show-msg :title = 'msg.title' :content='msg.content'></show-msg>
+                    <show-msg v-bind='msg'></show-msg>
+                </div>
+            </template>
+            <script>
+                import ShowMsg from './ShowMsg.vue'
+                export default {
+                    components:{
+                        ShowMsg
+                    },
+                    data() {
+                        return{
+                            title:'标题 title',
+                            content:'内容 content',
+                            msg:{
+                                title:'标题 msg.title',
+                                content:'内容 content'
+                            }
+                        }
+                    }
+                }
+            </script>
+            ```
+    - ShowMsg文件
+        - ```html
+            <template>
+                <div class='show-msg'>
+                    <h4>{{title}}</h4>
+                    <div>{{content}}</div>
+                </div>
+            </template>
+            <script>
+                export default {
+                    props:['title','content']
+                }
+            </script>
+            ```
+    - 效果图
+      - ![效果图](./图片/屏幕截图%202025-05-06%20151203.png)
+    - 说明：
+      - 功能描述
+        - 该实例展示了 Vue.js 中父组件如何通过 props 向子组件传递数据。通过不同的方式传递数据，子组件可以接收并渲染父组件传递的内容。
+      --- 
+    - 代码逻辑：
+      1.  父组件（App.vue）：
+          1. 直接传递静态字符串：<show-msg title="标题" content="内容"></show-msg>。
+          2. 绑定动态数据：<show-msg :title="title" :content="content"></show-msg>。
+          3. 绑定对象属性：<show-msg :title="msg.title" :content="msg.content"></show-msg>。
+          4. 使用 v-bind 绑定整个对象：<show-msg v-bind="msg"></show-msg>。
+       2. 子组件
+          - 子组件通过 props 接收父组件传递的数据。
+          - `props` 定义为字符串数组，表示接收的属性名称为 `title` 和 `content`。
+          - 子组件通过插值语法 `{{title}}` 和 `{{content}}` 渲染接收到的数据。
+      --- 
+    - 关键点：
+      1. `props` 的使用:
+         -  子组件通过 `props` 接收父组件传递的数据。
+         - `props` 可以是字符串数组，也可以是对象，后者可以指定类型、默认值等。
+      2. 数据绑定方式
+         - 静态绑定：直接传递字符串。
+         - 动态绑定：使用 : 绑定父组件的变量。
+         - 对象绑定：使用 v-bind 绑定整个对象。
+      3. 组件复用：
+         -  通过 props，父组件可以动态传递不同的数据，从而实现子组件的复用。
+      ---
+    - 适用场景：
+      - 父组件需要向子组件传递数据时。
+      - 需要实现组件的复用，通过传递不同的数据渲染不同的内容。
