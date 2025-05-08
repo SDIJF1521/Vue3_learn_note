@@ -3261,6 +3261,13 @@ h4 {
                 }
             </script>
             ```
+    - main.js文件
+        - ```js
+            import { createApp } from 'vue'
+            import App from './实例51/App.vue'
+
+            createApp(App).mount('#app')
+            ```
     - 效果图
       - ![效果图](./图片/屏幕截图%202025-05-06%20151203.png)
     - 说明：
@@ -3292,3 +3299,148 @@ h4 {
     - 适用场景：
       - 父组件需要向子组件传递数据时。
       - 需要实现组件的复用，通过传递不同的数据渲染不同的内容。
+  - 实例52(对象类型):
+    - 目录树
+        - ```
+            └─src
+            │   ├─ 实例51组件
+            │   │   ├─App.vue
+            │   │   │
+            │   │   └─ShowMsg.vue
+            │   │
+            │   └─main.js 
+            ```
+    - App.vue文件
+        - ```html
+            <template>
+                <div class = 'app'>
+                    <show-msg title = '标题' content = '内容'></show-msg>
+                    <show-msg :title = 'title' :content='content'></show-msg>
+                    <show-msg :title = 'msg.title' :content='msg.content'></show-msg>
+                    <show-msg v-bind='msg'></show-msg>
+                </div>
+            </template>
+            <script>
+                import ShowMsg from './ShowMsg.vue'
+                export default {
+                    components:{
+                        ShowMsg
+                    },
+                    data() {
+                        return{
+                            title:'标题 title',
+                            content:'内容 content',
+                            msg:{
+                                title:'标题 msg.title',
+                                content:'内容 content'
+                            }
+                        }
+                    }
+                }
+            </script>
+            ```
+    - ShowMsg.vue
+      - ```html
+            <template>
+                <div class='show-msg'>
+                    <h4>{{title}}</h4>
+                    <div>{{content}}</div>
+                </div>
+            </template>
+            <script>
+                export default {
+                    props:{
+                        title:String,
+                        content:{
+                            type:String,
+                            required:true,
+                            default:'默认值'
+                        }
+                    }
+                }
+            </script>
+            ```
+    - main.js文件
+      - ```js
+            import { createApp } from 'vue'
+            import App from './实例51/App.vue'
+
+            createApp(App).mount('#app')
+            ```
+    - 运行效果同实例51
+    - 说明
+      - 代码逻辑：
+        - 父组件（`App.vue`）
+          1. 直接传递静态字符串：`<show-msg title="标题" content="内容"></show-msg>`。
+          2. 绑定动态数据：`<show-msg :title="title" :content="content"></show-msg>` 。
+          3. 绑定对象属性：`<show-msg :title="msg.title" :content="msg.content"></show-msg>` 。
+          4. 使用 v-bind 绑定整个对象：`<show-msg v-bind="msg"></show-msg>` 。
+       --- 
+       -  子组件（`ShowMsg.vue`）：
+          -  子组件通过 `props` 接收父组件传递的数据。
+          -  使用对象类型的 `props` 定义，指定了属性的类型、是否必填以及默认值：
+             -  `title` ：类型为 String。
+             -  `content` ：类型为 `String` ，必填，且有默认值 `'默认值'`。
+      ---  
+      - 关键点：
+          - `props` 的使用：
+
+            - 子组件通过 `props` 接收父组件传递的数据。
+            - 使用对象类型的 `props` 定义，可以指定属性的类型、是否必填以及默认值。
+          - 数据绑定方式：
+
+            - 静态绑定：直接传递字符串。
+            - 动态绑定：使用 : 绑定父组件的变量。
+            - 对象绑定：使用 `v-bind` 绑定整个对象。
+          - 组件复用：
+            - 通过 `props` ，父组件可以动态传递不同的数据，从而实现子组件的复用。
+- `props` 对象语法细节
+  1. `type` 属性支持的类型如下
+     - `String`
+     - `Number`
+     - `Boolean`
+     - `Array`
+     - `Object`
+     - `Date`
+     - `Function`
+     - `Symbol`
+  2. 对象类型和其他写法如下:
+     - `type` : 属性类型
+     - `required` : 是否上传
+     - `default` : 默认值
+     - `validator` : 自定义验证函数    
+     - 示例:
+       - ```js
+           export default {
+               props:{
+                   propA:Number,
+                   propB:[String,Number],
+                   propC:{
+                       type:String,
+                       required:true
+                   },
+                   propD:{
+                       type:Number,
+                       default:100,
+                   },
+                   propE:{
+                       type:Object,
+                       default() {
+                           return {msg:'hello'}
+                       }
+                   },
+                   propF:{
+                       validator(value){
+                           return ['success','warning','danger'].includes(value)
+                       }
+                   },
+                   propG:{
+                       type: Function,
+                       default() {
+                           return 'hello vue'
+                       }
+                   }
+               }
+           }
+  3. `props` 命名规范
+     -  
