@@ -775,42 +775,44 @@
         ``` 
         - 运行后程序可以根据文本框中的分数来进行评判 这里 `v-model` 这里的作用是双向绑定，即文本框的数据会被绑定到 score变量中同时score变量的值也会影响文本框的数据
 ##### v-show指令
-    - `v-show` 指令的用法和作用和 `v-if` 指令一致
-    - 实例22：
-        - ```html
-                <body>
-                    <div id = 'app'></div>
-                    <template id = 'my-app'>
-                        <h2 v-show ='isShow'>你好世界</h2>
-                        <button @click = 'execute'>按下{{mag}}</button>
-                    </template>
-                    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-                    <script>
-                        const App = Vue.createApp(
-                            {
-                                template:'#my-app',
-                                data(){
-                                    return{
-                                        isShow : true,
-                                        mag:'隐藏'
+- `v-show` 指令的用法和作用和 `v-if` 指令一致
+- 实例22：
+    - ```html
+            <body>
+                <div id = 'app'></div>
+                <template id = 'my-app'>
+                    <h2 v-show ='isShow'>你好世界</h2>
+                    <button @click = 'execute'>按下{{mag}}</button>
+                </template>
+                <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+                <script>
+                    const App = Vue.createApp(
+                        {
+                            template:'#my-app',
+                            data(){
+                                return{
+                                    isShow : true,
+                                    mag:'隐藏'
+                                }
+                            },
+                            methods:{
+                                execute(){
+                                    if (this.isShow){
+                                        this.mag = '显示'
+                                    }else{
+                                        this.mag = '隐藏'
                                     }
-                                },
-                                methods:{
-                                    execute(){
-                                        if (this.isShow){
-                                            this.mag = '显示'
-                                        }else{
-                                            this.mag = '隐藏'
-                                        }
-                                        this.isShow = !this.isShow
-                                    }
+                                    this.isShow = !this.isShow
                                 }
                             }
-                        ).mount('#app')
-                    </script>
-                </body>
-            ```
-            - 运行后按下按钮隐藏 `<h2>` 标签，再次按下按钮显示 `<h2>` 标签
+                        }
+                    ).mount('#app')
+                </script>
+            </body>
+        ```
+        - 运行后按下按钮隐藏 `<h2>` 标签，再次按下按钮显示 `<h2>` 标签
+##### v-if和v-show的区别
+- `v-if` 指令的显示与隐藏是通过创建销毁元素来实现而 `v-show` 指令是通过css属性来显示和隐藏元素：
 #### 列表渲染
 ##### v-for指令
 - 在真实开发过程中，通常需要从服务器获取一组数据并渲染的页面上，这时就可以用Vue3中 `v-for` 指令来实现， `v-for` 指令类似与JavaScript中的for循环，可用于遍历一组数据并渲染到页面上
@@ -3363,7 +3365,7 @@ h4 {
     - main.js文件
       - ```js
             import { createApp } from 'vue'
-            import App from './实例51/App.vue'
+            import App from './实例52/App.vue'
 
             createApp(App).mount('#app')
             ```
@@ -3444,3 +3446,125 @@ h4 {
            }
   3. `props` 命名规范
      - 在 `HTML` 中,属性不区分大小写，浏览器会将所以的大写字符解释为小写字符。因此我们可以使用蛇形命名法和驼峰命名法 
+     - 示例：
+       - ShowMsg
+        - ```html
+            <template>
+                <div class='show-msg'>
+                    ···
+                    <div v-if = 'magInfo'>{{msgInfo}}</div>
+                </div>
+            </template>
+            <script>
+                export default {
+                    props:{
+                        'msgInfo':{
+                            type:String
+                        },
+                        'msg-info':{
+                            type:String
+                        }
+                    }
+                }
+            </script>
+            ```
+      - App
+        - ```html
+            <template>
+                <div class = 'app'>
+                    <show-msg msgInfo='msgInfo字符串'></show-msg>
+                    <show-msg msg-info='msg-info字符串'></show-msg>
+                </div>
+            </template>
+            ```
+
+- 非 `props` 属性和属性继承
+  - 当我们为一个组件传递传递某个属性时,但该属性没有定义对应的 `props` 或 `emits` 时就称非 `props` 属性，常见的有 `id` `class` `style` 属性等。当组件只有单个根节点时，这些非 Attributte 将被 $\color{red}{自动添加当根节点属性中}$, 这种被称为 $\color{yellow}{属性继承}$
+  - 实例53
+    - 目录树
+      - ```
+        └─src
+        │   ├─ 实例51组件
+        │   │   ├─App.vue
+        │   │   │
+        │   │   └─NoPeops.vue
+        │   │
+        │   └─main.js 
+        ```
+    - App.vue
+      - ```html
+            <template>
+                <div class='app'>
+                    <no-props id = 'coder' class='why' name = 'vscode'></no-props>
+                </div>
+            </template>
+            <script>
+                import NoProps from './NoProps.vue';
+                export default {
+                    components: {
+                        NoProps
+                    }
+                }
+            </script>
+            ```
+    - NoPeops.vue
+      - ```html
+            <template>
+                <div class = 'no-props'>
+                    <h4 :class="$attrs.class">{{$attrs.class}}-{{$attrs.name}}</h4>
+                </div>
+            </template>
+            <script>
+                export default {
+                    inheritAttrs:false
+                }
+            </script>
+            ```
+     - main.js文件
+      - ```js
+            import { createApp } from 'vue'
+            import App from './实例53/App.vue'
+
+            createApp(App).mount('#app')
+            ```
+    - 效果图
+      - ![效果图](./图片/屏幕截图%202025-05-14%20163418.png)
+    - 说明
+      - 功能描述：
+        - 该实例展示了 Vue.js 中非 props 属性的继承行为，以及如何通过 $attrs 和 inheritAttrs 属性来控制非 props 属性的传递和使用。
+      ---
+      - 代码逻辑：
+        1. 父组件（ `App.vue` ）：
+           -  父组件通过 `<no-props>` 自定义组件传递了一些非 `props` 属性：
+            - `id="coder"`
+            - `class="why"`
+            - `name="vscode"`
+           - 这些属性没有在子组件中定义为 `props` ，因此被视为非 `props` 属性
+      --- 
+      - 关键点：
+        1. 非 `props` 属性：
+           -  非 props 属性是指未在子组件中定义为 props 的属性。
+           -  默认情况下，这些属性会自动添加到子组件的根节点。
+        2. `inheritAttrs` 属性：
+           - 设置 `inheritAttrs: false` 可以禁用非 `props` 属性的自动继承行为。
+           - 这使得开发者可以通过 `$attrs` 对象手动控制非 `props` 属性的使用。
+        3. `$attrs` 对象：
+           -  `$attrs` 包含了所有未被定义为 `props` 的属性。
+           -  可以通过 `$attrs` 手动绑定这些属性到子组件的任意元素。
+      --- 
+      - 适用场景
+        - 需要精确控制非 `props` 属性的传递和使用时。
+        - 当子组件有多个根节点，或者需要将非 `props` 属性绑定到特定的子元素时。
+- 对于多个根节点，需手动绑定非 `props` 的属性
+  - 示例
+    - ```html
+        <template>
+            <div class='no-props'>该组件没有定义props属性</div>
+            <div class='no-props' :class = '$attrs.class'>该组件没有定义props属性</div>
+        </template>
+        <script>
+            export default {}
+        </script>
+        ```
+        - 这里html的 `class` 属性会绑定到 `<div class='no-props' :class = '$attrs.class'>` 上面的 `class` 如果没有显示绑定，控制台会出现警告
+##### 子组件传递数据给父组件
