@@ -3568,3 +3568,221 @@ h4 {
         ```
         - 这里html的 `class` 属性会绑定到 `<div class='no-props' :class = '$attrs.class'>` 上面的 `class` 如果没有显示绑定，控制台会出现警告
 ##### 子组件传递数据给父组件
+- 除了父组件传递数据给子组件，有时还需要将子组件的数据传递给父组件,在vue3中可以使用 `$emits` 函数实现,具体步骤如下
+  1. 在子组件中定义触发事件的名称，如 `emits['add']`
+  2. 在父组件中以 `v-on` 的方式传入要监听的事件名称，并绑定到对应的方法中，如 `@add-addOn`
+  3. 在子组件中发生事件时，根据事件名称，使用 `$emits` 触发函数对应事件，如 `this.$emits('add',参数)`
+- 自定义事件流程
+  - 实例54:
+    - 目录树
+      - ```
+            └─src
+            │   ├─ 实例51组件
+            │   │   ├─App.vue
+            │   │   │
+            │   │   └─CounterOpertion.vue
+            │   │
+            │   └─main.js 
+          ```
+      - App.vue
+        - ```html
+            <template>
+                <div>
+                    <h4>当前计数：{{counter}}</h4>
+                    <counter-opertion @add='addOn' @sub='subOn'/>
+                </div>
+            </template>
+            <script>
+                import CounterOpertion from './CounterOpertion.vue'
+                export default {
+                    components: {
+                        CounterOpertion
+                    },
+                    data(){
+                        return {
+                            counter:0
+                        }
+                    },
+                    methods:{
+                        addOn(){
+                            this.counter++
+                        },
+                        subOn(){
+                            this.counter--
+                        }
+                    }
+                }
+            </script>
+            ```
+    - CounterOpertion.vue
+      - ```html
+            <template>
+                <div>
+                    <button @click = 'incremet'>+1</button>
+                    <button @click = 'decremet'>-1</button>
+                </div>
+            </template>
+            <script>
+                export default {
+                    emits: ["add","sub"],
+                    methods:{
+                        incremet(){
+                            this.$emit('add')
+                        },
+                        decremet(){
+                            this.$emit('sub')
+                        }
+                    }
+                }
+            </script>
+            ```
+    - main.js
+      - ```js
+            import { createApp } from 'vue'
+            import App from './实例54/App.vue'
+
+            createApp(App).mount('#app')
+            ```
+    - 效果图
+      - ![效果图](./图片/屏幕截图%202025-05-15%20145858.png)
+    - 说明
+      - 功能描述
+        - 该实例演示了 Vue3 中子组件通过自定义事件（$emit）向父组件传递数据，实现父子组件之间的通信。具体场景为：子组件点击按钮触发加/减操作，父组件响应事件并修改计数器。
+      --- 
+      - 代码逻辑
+        1. 父组件（App.vue）
+           -  定义了一个响应式数据 `counter` ，用于记录当前计数
+           -  引入子组件 `<counter-opertion>` ，并通过 `@add="addOn"` 和 `@sub="subOn"` 监听子组件的自定义事件。
+           -  当子组件触发 `add` 事件时，`addOn` 方法执行，`counter` 加一；当触发 `sub` 事件时，`subOn` 方法执行，`counter` 减一。
+        2. 子组件（CounterOpertion.vue）
+           -  通过 `emits: ["add","sub"]` 声明将要触发的自定义事件。
+           -  定义 `incremet` 和 `decremet` 方法，分别在按钮点击时通过 `this.$emit('add')` 和 `this.$emit('sub')` 向父组件发送事件。
+      ---  
+      - 关键点
+        1. 自定义事件通信
+           - 子组件通过 `$emit` 触发事件，父组件通过 `v-on`（或简写 `@` ）监听事件，实现父子组件通信。
+        2. emits 选项
+           - 子组件通过 `emits` 明确声明可触发的事件名称，增强代码规范性和可维护性。
+        3. 父组件方法响应
+           - 父组件通过方法响应子组件事件，实现数据的集中管理。
+      ---
+      - 适用场景
+        -  子组件需要通知父组件某些操作（如按钮点击、表单提交等）。
+        -  需要实现父子组件之间的解耦和事件驱动通信。
+- 自定义事件参数
+  - 实例55：
+    - 目录树
+      - ```
+            └─src
+            │   ├─ 实例51组件
+            │   │   ├─App.vue
+            │   │   │
+            │   │   └─CounterOpertion.vue
+            │   │
+            │   └─main.js 
+          ```
+    - App.vue
+      - ```html
+            <template>
+                <div>
+                    <h4>当前计数：{{counter}}</h4>
+                    <counter-opertion @add='addOn' @sub='subOn' @addN='addNum'/>
+                </div>
+            </template>
+            <script>
+                import CounterOpertion from './CounterOpertion.vue'
+                export default {
+                    components: {
+                        CounterOpertion
+                    },
+                    data(){
+                        return {
+                            counter:0
+                        }
+                    },
+                    methods:{
+                        addOn(){
+                            this.counter++;
+                        },
+                        subOn(){
+                            this.counter--;
+                        },
+                        addNum(num,name,age){
+                            console.log(name,age);
+                            this.counter+=num;
+                        }
+                    }
+                }
+            </script>
+            ```
+    - CounterOpertion.vue
+      - ```html
+            <template>
+                <div>
+                    <button @click = 'incremet'>+1</button>
+                    <button @click = 'decremet'>-1</button>
+                    <input typr = 'text' v-model.number='num'>
+                    <button @click = 'incremetN'>+n</button>
+                </div>
+            </template>
+            <script>
+                export default {
+                    emits: ["add","sub","addN"],
+                    data(){
+                        return {
+                            num:0
+                        }
+                    },
+                    methods:{
+                        incremet(){
+                            this.$emit('add')
+                        },
+                        decremet(){
+                            this.$emit('sub')
+                        },
+                        incremetN(){
+                            this.$emit('addN',this.num,'why',18);
+                        }
+                    }
+                }
+            </script>
+            ```
+      - main.js
+        - ```js
+            import { createApp } from 'vue'
+            import App from './实例55/App.vue'
+
+            createApp(App).mount('#app')
+            ```
+    
+      - 效果图
+        - ![效果图](./图片/屏幕截图%202025-05-15%20152338.png)
+      - 说明
+        - 功能描述
+          - 该实例演示了 Vue3 中子组件通过自定义事件（ `$emit` ）向父组件传递多个参数，实现更灵活的父子组件通信。具体场景为：子组件点击不同按钮触发加/减/加指定数值操作，父组件响应事件并修改计数器。
+        --- 
+        - 代码逻辑
+          1. 父组件（App.vue）
+             - 定义响应式数据 `counter` ，用于记录当前计数。
+             - 引入子组件 `<counter-opertion>` ，并通过 `@add="addOn"` 、`@sub="subOn"` 、`@addN="addNum"` 监听子组件的自定义事件。
+             - `addOn` 方法：计数器加一。
+             - `subOn` 方法：计数器减一。
+             - `addNum(num, name, age)` 方法：计数器加上指定的 `num` ，并打印 `name` 和 `age` 。
+          2. 子组件（CounterOpertion.vue）
+             - 通过 `emits: ["add","sub","addN"]` 声明将要触发的自定义事件。
+             -  定义响应式数据 `num` ，用于输入加多少。
+             -  `incremet`方法：点击“+1”按钮时通过 `this.$emit('add')` 触发加一事件。
+             -  `decremet` 方法：点击“-1”按钮时通过 `this.$emit('sub')` 触发减一事件。
+             -  `incremetN` 方法：点击“+n”按钮时通过 `this.$emit('addN', this.num, 'why', 18)` 触发加指定数值事件，并传递多个参数。
+        --- 
+        - 关键点
+          1. 自定义事件参数传递
+            - 子组件通过 `$emit` 可以向父组件传递多个参数，父组件方法可按顺序接收。
+          2. emits 选项
+            -  子组件通过 `emits` 明确声明可触发的事件名称，增强代码规范性和可维护性。
+          3. 父组件方法响应
+            -  父组件通过方法响应子组件事件，实现数据的集中管理和灵活处理。
+        --- 
+        - 适用场景
+          - 子组件需要向父组件传递多个数据或参数时。
+          - 需要实现更复杂的父子组件事件通信和数据交互。
