@@ -2227,6 +2227,13 @@
   2. 在模板中使用局部组件
 - 实例45:
     - ```html
+          <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Document</title>
+            </head>
             <body>
                 <div id = 'app'></div>
                 <template id = 'my-app'>
@@ -2267,22 +2274,7 @@
                                 },
                                 methods:{
                                     btnClick(){
-                                        console.log('按钮被点击了')<template>
-    <h4>hello vue</h4>
-    <h4 class="hello">hello world</h4>
-</template>
-<script>
-export default {
-    mounted() {
-        console.log('Hello_Vue.vue 组件已挂载')
-    }
-}
-</script>
-<style scoped>
-h4 {
-    color: red;
-}
-</style>    
+                                        console.log('按钮被点击了')
                                     }
                                 }
                             },
@@ -2299,6 +2291,7 @@ h4 {
                     const app = Vue.createApp(App).mount('#app');
                 </script>
             </body> 
+            </html>
         ```
       - 代码运行后可以看到文本框和标题的内容为hello world 点击按钮后控制台输出按钮被点击了
       - 说明：
@@ -3786,3 +3779,126 @@ h4 {
         - 适用场景
           - 子组件需要向父组件传递多个数据或参数时。
           - 需要实现更复杂的父子组件事件通信和数据交互。
+- 定义事件验证
+  -  实例56：
+     - 目录树
+      - ```
+            └─src
+            │   ├─ 实例51组件
+            │   │   ├─App.vue
+            │   │   │
+            │   │   └─CounterOpertion.vue
+            │   │
+            │   └─main.js 
+          ```  
+      - App.vue
+        - ```html
+                <template>
+                    <div>
+                        <h4>当前计数：{{counter}}</h4>
+                        <counter-opertion @add='addOn' @sub='subOn' @addN='addNum'/>
+                    </div>
+                </template>
+                <script>
+                    import CounterOpertion from './CounterOpertion.vue'
+                    export default {
+                        components: {
+                            CounterOpertion
+                        },
+                        data(){
+                            return {
+                                counter:0
+                            }
+                        },
+                        methods:{
+                            addOn(){
+                                this.counter++;
+                            },
+                            subOn(){
+                                this.counter--;
+                            },
+                            addNum(num,name,age){
+                                console.log(name,age);
+                                this.counter+=num;
+                            }
+                        }
+                    }
+                </script>
+            ``` 
+          - CounterOpertion.vue
+            - ```html
+                <template>
+                    <div>
+                        <button @click = 'incremet'>+1</button>
+                        <button @click = 'decremet'>-1</button>
+                        <input typr = 'text' v-model.number='num'>
+                        <button @click = 'incremetN'>+n</button>
+                    </div>
+                </template>
+                <script>
+                    export default {
+                        emits:{
+                            add:null,
+                            sub:null,
+                            addN:(num,num,age) =>{
+                                if (num>10){
+                                    return true
+                                }
+                                return false
+                            }
+                        },
+                        data(){
+                            return {
+                                num:0
+                            }
+                        },
+                        methods:{
+                            incremet(){
+                                this.$emit('add')
+                            },
+                            decremet(){
+                                this.$emit('sub')
+                            },
+                            incremetN(){
+                                this.$emit('addN',this.num,'why',18);
+                            }
+                        }
+                    }
+                </script>
+                ```
+          - main.js
+            - ```js
+                import { createApp } from 'vue'
+                import App from './实例56/App.vue'
+
+                createApp(App).mount('#app')
+                ``` 
+          - 效果图
+            - ![效果图](./图片/屏幕截图%202025-05-22%20143807.png)
+          - 说明
+            - 功能描述
+              - 该实例演示了 Vue3 中子组件通过自定义事件（ `$emit` ）向父组件传递多个参数，并利用 `emits` 选项对事件参数进行验证。只有当参数满足验证条件时，事件才会被触发，实现了事件参数的校验。
+            - 代码逻辑
+              1. 父组件（App.vue）
+                 -  定义响应式数据 `counter` ，用于记录当前计数。
+                 -  引入子组件 `<counter-opertion>` ，并通过 `@add="addOn" `、 `@sub="subOn"` 、`@addN="addNum"` 监听子组件的自定义事件。
+                 - `addOn` 方法：计数器加一。
+                 - `subOn` 方法：计数器减一。
+                 - `addNum(num, name, age)` 方法：计数器加上指定的 num，并打印 name 和 age。
+              2. 子组件（CounterOpertion.vue）
+                 - 通过 `emits` 选项对象形式声明事件，并对 `addN` 事件添加参数校验函数：
+                   - 只有当 `num > 10` 时，`addN` 事件才会被触发
+                 - 定义响应式数据 `num` ，用于输入加多少。
+                 - `incremet` 方法：点击“+1”按钮时通过 `this.$emit('add')` 触发加一事件。
+                 - `decremet` 方法：点击“-1”按钮时通过 `this.$emit('sub')` 触发减一事件。
+                 - `incremetN` 方法：点击“+n”按钮时通过 `this.$emit('addN', this.num, 'why', 18)` 触发加指定数值事件，并传递多个参数。
+            - 关键点
+               1. 自定义事件参数验证
+                  - 子组件通过 `emits` 选项对象形式为事件添加校验函数，只有校验通过时事件才会被触发。 
+               2. 多参数传递
+                  - 子组件通过 `$emit` 可以向父组件传递多个参数，父组件方法可按顺序接收。
+               3.  父组件方法响应
+                  - 父组件通过方法响应子组件事件，实现数据的集中管理和灵活处理。
+            - 适用场景
+              - 子组件需要向父组件传递多个数据或参数，并且需要对参数进行校验时。
+              - 需要实现更复杂的父子组件事件通信和数据交互。
